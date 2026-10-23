@@ -64,6 +64,7 @@ body{background:white}
 .card{break-inside:avoid;box-shadow:none}
 main{max-width:none}
 }
+.role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px;margin-top:14px}.role-grid>div{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fff}.role-grid strong{display:block;color:var(--navy)}.role-grid p{margin:7px 0 10px}.role-grid .pill{font-size:.68rem;white-space:normal;display:inline-block;margin-top:4px}.role-grid input,.role-grid textarea{width:100%}
 </style>
 </head>
 <body>
@@ -242,6 +243,24 @@ main{max-width:none}
 <section id="activities" class="panel">
 <h2>Facilitated workshop activities</h2>
 <p class="muted">Use these as a participant workbook. Record ideas for later use in your action plan.</p>
+
+<div class="card activity" style="margin-top:14px">
+  <div class="eyebrow">Workshop team · Volunteer roles</div>
+  <h3>Roles and responsibilities</h3>
+  <p>Participants may volunteer for one or more roles below. Enter the volunteer's name in the corresponding field; leave a field blank if the role is not assigned yet.</p>
+  <div class="role-grid">
+    <div><strong>Facilitator</strong><p class="small muted">Designs the process, frames the conversation, guides activities, manages time, and keeps the group neutral.</p><label for="volFacilitator">Volunteer name</label><input id="volFacilitator" placeholder="Name of volunteer"></div>
+    <div><strong>Collector / Scribe (Recorder)</strong><p class="small muted">Captures the group's ideas, decisions, key themes, and open questions.</p><label for="volScribe">Volunteer name</label><input id="volScribe" placeholder="Name of volunteer"></div>
+    <div><strong>Co-facilitator <span class="pill">Optional · Recommended for larger groups</span></strong><p class="small muted">Provides mobile support, manages breakout rooms or technology for virtual sessions, and helps track participants.</p><label for="volCoFacilitator">Volunteer name</label><input id="volCoFacilitator" placeholder="Name of volunteer"></div>
+    <div><strong>Timekeeper</strong><p class="small muted">Tracks time for each activity and gives warnings before segments end.</p><label for="volTimekeeper">Volunteer name</label><input id="volTimekeeper" placeholder="Name of volunteer"></div>
+    <div><strong>Participants</strong><p class="small muted">External stakeholders, team members, or clients who actively engage, ask and answer questions, and share input.</p><label for="volParticipants">Volunteer names</label><textarea id="volParticipants" rows="2" placeholder="Enter participant names, separated by commas"></textarea></div>
+    <div><strong>Decider <span class="pill">Common in Design Sprints</span></strong><p class="small muted">A senior leader or product owner who makes the final decision if the group cannot reach consensus.</p><label for="volDecider">Volunteer name</label><input id="volDecider" placeholder="Name of volunteer"></div>
+    <div><strong>Domain Experts</strong><p class="small muted">Contribute subject or context expertise, clarify technical questions, and help the group make informed decisions.</p><label for="volExperts">Volunteer names</label><textarea id="volExperts" rows="2" placeholder="Participants volunteering as domain experts"></textarea></div>
+  </div>
+  <p class="small muted">Volunteer names are entered locally in this activity form. Download or copy the details if you need to retain them.</p>
+  <button type="button" class="secondary" id="downloadRoles">Download volunteer role list</button>
+  <span id="roleStatus" class="small muted" role="status"></span>
+</div>
 
 <div class="card activity">
 <div class="eyebrow">Activity 1 · 15–20 minutes</div>
@@ -498,6 +517,20 @@ async function loadPending(){
 }
 document.getElementById('adminLoad')?.addEventListener('click',loadPending);
 loadSharedResources();
+
+document.getElementById('downloadRoles')?.addEventListener('click',()=>{
+  const roles=[
+    ['Facilitator','volFacilitator'],['Collector / Scribe (Recorder)','volScribe'],
+    ['Co-facilitator','volCoFacilitator'],['Timekeeper','volTimekeeper'],
+    ['Participants','volParticipants'],['Decider','volDecider'],['Domain Experts','volExperts']
+  ];
+  const content='KVS CIVIC BEHAVIOUR WORKSHOP — VOLUNTEER ROLE LIST\\n\\n'+roles.map(([label,id])=>label+'\\n'+(document.getElementById(id).value.trim()||'Not assigned')).join('\\n\\n');
+  const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download='KVS_Civic_Behaviour_Workshop_Volunteer_Roles.txt';a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('roleStatus').textContent='Volunteer role list downloaded.';
+});
 
 function checkCase(){
 const v=document.querySelector('input[name="case"]:checked');
