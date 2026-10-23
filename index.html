@@ -282,8 +282,17 @@ main{max-width:none}
 <tr><td style="padding:8px;border:1px solid #c7d2df">10</td><td style="padding:8px;border:1px solid #c7d2df">Citizens share responsibility for the common good.</td><td style="padding:8px;border:1px solid #c7d2df"><textarea class="a1-table" aria-label="Desired behaviour for common good" placeholder="What should we do?"></textarea></td><td style="padding:8px;border:1px solid #c7d2df"><textarea class="a1-table" aria-label="Unwanted behaviour for common good" placeholder="What should we avoid?"></textarea></td><td style="padding:8px;border:1px solid #c7d2df"><input class="a1-table" aria-label="Indian context for common good" placeholder="e.g. neighbourhood"></td></tr>
 </tbody></table></div>
 <p class="small muted">Group task: complete the three blank columns. Focus on observable actions and realistic everyday Indian settings; discuss without blaming individuals.</p>
+<div class="grid" style="margin-top:14px">
+<div><label for="a1GroupName">Group name / number</label><input id="a1GroupName" placeholder="e.g., Group 1" required></div>
+<div><label for="a1SubmittedBy">Submitted by (participant name)</label><input id="a1SubmittedBy" placeholder="Name of group representative" required></div>
+</div>
 <label for="a1">Our group's key insight</label>
 <textarea id="a1" placeholder="What did your group learn about the connection between mindset and action?"></textarea>
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
+<button type="button" class="primary" id="submitActivity1">Submit Activity 1 response to Google Sheet</button>
+<span id="a1SubmitStatus" class="small muted" role="status"></span>
+</div>
+<p class="small muted">Complete the table and group details before submitting. One submission records all 10 rows and the group's key insight.</p>
 </div>
 
 <div class="card activity" style="margin-top:14px">
@@ -542,6 +551,26 @@ document.getElementById('downloadRoles')?.addEventListener('click',()=>{
   a.href=url;a.download='KVS_Civic_Behaviour_Workshop_Volunteer_Roles.txt';a.click();
   URL.revokeObjectURL(url);
   document.getElementById('roleStatus').textContent='Volunteer role list downloaded.';
+});
+
+document.getElementById('submitActivity1')?.addEventListener('click',async()=>{
+  const status=document.getElementById('a1SubmitStatus');
+  const groupName=document.getElementById('a1GroupName').value.trim();
+  const submittedBy=document.getElementById('a1SubmittedBy').value.trim();
+  const insight=document.getElementById('a1').value.trim();
+  if(!groupName||!submittedBy){status.textContent='Enter the group name/number and the submitting participant name.';return;}
+  const rows=[...document.querySelectorAll('.table-wrap tbody tr')].map((tr,index)=>{
+    const cells=tr.querySelectorAll('td');
+    return {number:index+1,mindset:cells[1].textContent.trim(),desiredBehaviour:cells[2].querySelector('textarea')?.value.trim()||'',unwantedBehaviour:cells[3].querySelector('textarea')?.value.trim()||'',context:cells[4].querySelector('input')?.value.trim()||''};
+  });
+  const hasContent=rows.some(r=>r.desiredBehaviour||r.unwantedBehaviour||r.context);
+  if(!hasContent&&!insight){status.textContent='Complete at least one table field or enter the group insight before submitting.';return;}
+  const button=document.getElementById('submitActivity1');button.disabled=true;button.textContent='Submitting…';status.textContent='Sending response to the shared register…';
+  try{
+    await apiPost({action:'submitActivity1',groupName,submittedBy,insight,rows,submittedAt:new Date().toISOString()});
+    status.textContent='Submission request sent. The Apps Script backend must support submitActivity1 for it to appear in the Google Sheet.';
+  }catch(e){status.textContent='Could not send submission: '+e.message;}
+  finally{button.disabled=false;button.textContent='Submit Activity 1 response to Google Sheet';}
 });
 
 function checkCase(){
