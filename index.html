@@ -1,0 +1,381 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KVS Civic Behaviour & Cleanliness Workshop | Participant Hub</title>
+<style>
+:root{--navy:#12356a;--blue:#1e5aa8;--green:#16845b;--gold:#f5b82e;--ink:#17243a;--muted:#607087;--paper:#f4f7fb;--line:#dce4ee}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);font-family:Arial,Helvetica,sans-serif;color:var(--ink);line-height:1.5}
+header{background:linear-gradient(120deg,#102d5d,#1e5aa8 68%,#13835b);color:white;padding:30px 20px 26px}
+.wrap{max-width:1100px;margin:auto}
+header .tag{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;opacity:.9;font-weight:bold}
+h1{font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.15;margin:10px 0}
+header p{max-width:800px;margin:0;color:#e8f1ff}
+.assessment-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:22px;max-width:740px}
+.assessment-link{display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:13px;text-decoration:none;color:#12356a;background:white;box-shadow:0 5px 16px #071b3b26;border:2px solid transparent}
+.assessment-link.pre{border-color:#f5b82e}
+.assessment-link.post{border-color:#7bd7ae}
+.assessment-link strong{display:block;font-size:.95rem}
+.assessment-link small{display:block;color:#607087;font-size:.8rem;margin-top:2px}
+.assessment-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:#eaf2ff;font-size:1.25rem;font-weight:bold}
+.post .assessment-icon{background:#e2f7eb;color:#08714b}
+.assessment-link .arrow{margin-left:auto;font-size:1.2rem}
+.assessment-link:hover{transform:translateY(-1px);box-shadow:0 8px 20px #071b3b30}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+nav button{border:1px solid #ffffff66;background:#ffffff16;color:white;padding:9px 13px;border-radius:22px;cursor:pointer;font-weight:bold}
+nav button.active,nav button:hover{background:white;color:var(--navy)}
+main{max-width:1100px;margin:22px auto;padding:0 16px 50px}
+.panel{display:none}
+.panel.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 4px 14px #102d5d0a}
+.card h3{margin:0 0 8px;color:var(--navy)}
+.eyebrow{color:var(--green);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;font-weight:bold}
+.hero-card{background:#fff9e9;border-color:#f0d58b}
+.metric{font-size:1.8rem;font-weight:800;color:var(--navy)}
+.muted{color:var(--muted)}
+.pill{display:inline-block;border-radius:20px;background:#e9f3ff;color:#17477e;padding:4px 9px;font-size:.78rem;font-weight:bold;margin:3px}
+label{display:block;font-weight:bold;margin:12px 0 5px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #c8d4e2;border-radius:9px;font:inherit;background:white;color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+button.primary{background:var(--blue);color:white;border:0;border-radius:9px;padding:11px 15px;font-weight:bold;cursor:pointer;margin-top:12px}
+button.secondary{background:#eaf0f8;color:var(--navy);border:1px solid var(--line);border-radius:9px;padding:10px 13px;cursor:pointer;font-weight:bold;margin:4px}
+.activity{border-left:5px solid var(--green)}
+.step{display:flex;gap:12px;margin:12px 0}
+.num{flex:0 0 32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#e0f4eb;color:#08714b;font-weight:bold}
+.question{padding:15px;border:1px solid var(--line);border-radius:12px;margin:12px 0;background:#fff}
+.question p{margin:0 0 8px;font-weight:bold}
+.question label{font-weight:normal;margin:7px 0;display:flex;gap:8px;align-items:flex-start}
+.question input{width:auto;margin-top:5px}
+.notice{padding:13px 15px;border-radius:10px;background:#eef7f2;border:1px solid #bde3cf;margin:12px 0}
+.warning{background:#fff5e8;border-color:#f3d1a4}
+.progress{height:8px;background:#e5ebf3;border-radius:9px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px;border-top:1px solid var(--line)}
+.small{font-size:.9rem}
+.hidden{display:none!important}
+@media print{
+header nav,nav,.no-print,button{display:none!important}
+body{background:white}
+.panel{display:block!important}
+.card{break-inside:avoid;box-shadow:none}
+main{max-width:none}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="tag">Kendriya Vidyalaya Sangathan · ZIET Mumbai</div>
+<h1>Civic Behaviour &amp; Cleanliness<br>Workshop Participant Hub</h1>
+<p>A practical space for KV Principals to explore the handbook, practise school-response decisions, check understanding and prepare a realistic action plan.</p>
+
+<div class="assessment-links" aria-label="Workshop assessments">
+<a class="assessment-link pre" href="https://docs.google.com/forms/d/e/1FAIpQLSdx5KgYApHBe8WlPQYWgAF110WijE752NcKxsaIC7cNQxGi6g/viewform" target="_blank" rel="noopener noreferrer">
+<span class="assessment-icon">✓</span>
+<span><strong>PRE-TEST</strong><small>Complete at the beginning</small></span><span class="arrow">↗</span>
+</a>
+<a class="assessment-link post" href="https://docs.google.com/forms/d/e/1FAIpQLSeL3YeKCf0jgpH10bUTdcWcr3yXw9AVSgw_4bv2M9FpL-Ho3g/viewform" target="_blank" rel="noopener noreferrer">
+<span class="assessment-icon">★</span>
+<span><strong>POST-ASSESSMENT</strong><small>Complete at the end</small></span><span class="arrow">↗</span>
+</a>
+</div>
+
+<nav aria-label="Main navigation">
+<button class="active" data-tab="home">Overview</button>
+<button data-tab="handbook">Handbook at a Glance</button>
+<button data-tab="activities">Workshop Activities</button>
+<button data-tab="quiz">Quick Check</button>
+<button data-tab="action">My KV Action Plan</button>
+</nav>
+</div>
+</header>
+
+<main>
+<section id="home" class="panel active">
+<div class="grid">
+<div class="card hero-card">
+<div class="eyebrow">Workshop purpose</div>
+<h3>Make civic behaviour part of everyday school life</h3>
+<p>Use familiar lessons and school routines to strengthen care, respect, cooperation and responsible use of shared spaces—without creating a separate subject or extra workload.</p>
+</div>
+<div class="card">
+<div class="eyebrow">Learning journey</div>
+<div class="metric">Grades 1–10</div>
+<p class="muted">Four developmental stages</p>
+<span class="pill">Foundational · 1–2</span>
+<span class="pill">Preparatory · 3–5</span>
+<span class="pill">Middle · 6–8</span>
+<span class="pill">Secondary · 9–10</span>
+</div>
+<div class="card">
+<div class="eyebrow">Core sequence</div>
+<h3>Observe → Connect → Model → Practise → Reflect</h3>
+<p class="muted">Start with an observable behaviour, link it to existing curriculum, model it consistently and reinforce it through routine.</p>
+</div>
+</div>
+<div class="grid" style="margin-top:14px">
+<div class="card">
+<h3>What participants will do</h3>
+<ul>
+<li>Distinguish awareness from observable behaviour.</li>
+<li>Use handbook guidance to plan one grade-linked experience.</li>
+<li>Practise responding to a student-raised concern.</li>
+<li>Draft a feasible first action for their KV.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Non-negotiable safeguards</h3>
+<ul>
+<li>No shaming, punishment, policing, ranking or competitions.</li>
+<li>Do not assign hazardous, technical or adult cleaning work to children.</li>
+<li>Respect dignity, inclusion and the role of staff who maintain spaces.</li>
+<li>Use existing reporting channels and close the loop with students.</li>
+</ul>
+</div>
+</div>
+<div class="notice"><strong>Assessment reminder:</strong> Complete the Pre-Test before the workshop activities and the Post-Assessment at the end. Use the assessment buttons at the top of this page.</div>
+<div class="notice"><strong>Participant tip:</strong> Keep one real school situation in mind as you move through the app. Use it to make your action plan specific and achievable.</div>
+</section>
+
+<section id="handbook" class="panel">
+<div class="grid">
+<div class="card"><div class="eyebrow">Part 1</div><h3>Common across all grades</h3><p>Principal and teacher guidance, adult modelling, readiness and the school response process.</p></div>
+<div class="card"><div class="eyebrow">Part 2</div><h3>Common across stages</h3><p>Classroom observation and stage-appropriate student feedback. These support learning; they are not inspection or scoring tools.</p></div>
+<div class="card"><div class="eyebrow">Part 3</div><h3>Grade-wise components</h3><p>Curriculum links, core activity, teacher guidance, repeated practices, participation, reflection and relevant reinforcement.</p></div>
+</div>
+<h2>Learning focus by stage</h2>
+<div class="grid">
+<div class="card"><h3>Grades 1–2 · Foundational</h3><p>Care for self, belongings and immediate surroundings through simple everyday practices.</p></div>
+<div class="card"><h3>Grades 3–5 · Preparatory</h3><p>Care for shared spaces and resources; cooperation and consideration for others.</p></div>
+<div class="card"><h3>Grades 6–8 · Middle</h3><p>Observe situations, understand systems and roles, practise safely and know when adult support is needed.</p></div>
+<div class="card"><h3>Grades 9–10 · Secondary</h3><p>Use evidence, examine perspectives and systems, and take bounded civic action within student responsibilities.</p></div>
+</div>
+<h2>When a student raises a concern</h2>
+<div class="grid">
+<div class="card"><div class="step"><div class="num">1</div><div><strong>Share concern</strong><br><span class="muted">Make it safe and clear for students to speak.</span></div></div></div>
+<div class="card"><div class="step"><div class="num">2</div><div><strong>Understand concern</strong><br><span class="muted">Listen and establish what support is needed.</span></div></div></div>
+<div class="card"><div class="step"><div class="num">3</div><div><strong>Respond</strong><br><span class="muted">Use the appropriate existing school channel.</span></div></div></div>
+<div class="card"><div class="step"><div class="num">4</div><div><strong>Close the loop</strong><br><span class="muted">Tell students what happened, as appropriate.</span></div></div></div>
+</div>
+<div class="notice warning"><strong>Remember:</strong> Children can observe, suggest and practise safe habits. Adults remain responsible for hazards, technical work, institutional decisions and ensuring concerns receive a response.</div>
+</section>
+
+<section id="activities" class="panel">
+<h2>Facilitated workshop activities</h2>
+<p class="muted">Use these as a participant workbook. Record ideas for later use in your action plan.</p>
+
+<div class="card activity">
+<div class="eyebrow">Activity 1 · 15–20 minutes</div>
+<h3>Civic sense or civic behaviour?</h3>
+<p><strong>Task:</strong> Sort statements into awareness/understanding and observable action.</p>
+<ul>
+<li>“I know litter harms shared spaces.” — awareness</li>
+<li>“I place waste in the appropriate bin and remind peers respectfully.” — observable action</li>
+<li>Discuss: What would an adult actually see or hear?</li>
+</ul>
+<label for="a1">Our key insight</label>
+<textarea id="a1" placeholder="Write one insight from your group"></textarea>
+</div>
+
+<div class="card activity" style="margin-top:14px">
+<div class="eyebrow">Activity 2 · 20–30 minutes</div>
+<h3>School walkthrough: observe without judging</h3>
+<p>Choose a shared space (classroom, corridor, playground, water point). Describe the behaviour and conditions around it; avoid naming or blaming individuals.</p>
+<label for="space">Space selected</label>
+<input id="space" placeholder="e.g., water point near the primary wing">
+<label for="obs">What observable behaviour or routine did you notice?</label>
+<textarea id="obs" placeholder="Describe facts, not assumptions"></textarea>
+<label for="barrier">What could be enabling or obstructing the behaviour?</label>
+<textarea id="barrier" placeholder="Routines, access to resources, adult modelling, clarity of roles…"></textarea>
+</div>
+
+<div class="card activity" style="margin-top:14px">
+<div class="eyebrow">Activity 3 · 25 minutes</div>
+<h3>Handbook-to-classroom challenge</h3>
+<p>Select one grade, connect a current curriculum lesson, then plan one safe, repeatable behaviour and an existing routine that can reinforce it.</p>
+<div class="grid">
+<div><label for="grade">Grade</label><select id="grade">
+<option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option>
+</select></div>
+<div><label for="lesson">Existing curriculum lesson/link</label><input id="lesson" placeholder="Subject and lesson"></div>
+</div>
+<label for="behaviour">Observable behaviour to strengthen</label>
+<textarea id="behaviour" placeholder="What should students consistently do?"></textarea>
+<label for="routine">Existing routine to reinforce it</label>
+<input id="routine" placeholder="e.g., class transition, assembly, end-of-lesson routine">
+<label for="adult">How will adults model it?</label>
+<textarea id="adult" placeholder="Name the adult practice, not only student expectations"></textarea>
+</div>
+
+<div class="card activity" style="margin-top:14px">
+<div class="eyebrow">Activity 4 · 15 minutes</div>
+<h3>From concern to closure</h3>
+<p>Scenario: Students report that a shared water point is often left wet and slippery. What is the responsible sequence?</p>
+<div class="question">
+<p>Choose the best response.</p>
+<label><input type="radio" name="case" value="a"> Ask students to clean it daily and identify who caused the problem.</label>
+<label><input type="radio" name="case" value="b"> Listen, check the concern, route the hazard through existing adult/school channels, and update students appropriately.</label>
+<label><input type="radio" name="case" value="c"> Announce the issue in assembly and rank classes by cleanliness.</label>
+<div id="caseFeedback" class="small muted"></div>
+<button class="secondary" onclick="checkCase()">Check response</button>
+</div>
+<label for="response">What would you say to students after the concern is addressed?</label>
+<textarea id="response" placeholder="Draft a brief, respectful follow-up"></textarea>
+</div>
+</section>
+
+<section id="quiz" class="panel">
+<h2>Quick understanding check</h2>
+<p class="muted">This is a learning check, not a performance ranking. Select one answer for each question.</p>
+<div class="progress"><span id="quizProgress"></span></div>
+<form id="quizForm">
+<div class="question"><p>1. The programme is intended to…</p>
+<label><input type="radio" name="q1" value="a"> create a separate subject and extra periods</label>
+<label><input type="radio" name="q1" value="b"> strengthen existing curriculum and school routines</label>
+<label><input type="radio" name="q1" value="c"> replace all current school initiatives</label></div>
+<div class="question"><p>2. Which is the most appropriate use of observation?</p>
+<label><input type="radio" name="q2" value="a"> identify and shame students who make mistakes</label>
+<label><input type="radio" name="q2" value="b"> rank classrooms from best to worst</label>
+<label><input type="radio" name="q2" value="c"> understand routines and support repeated practice</label></div>
+<div class="question"><p>3. A task is hazardous or requires technical expertise. Students should…</p>
+<label><input type="radio" name="q3" value="a"> stop and seek appropriate adult/trained support</label>
+<label><input type="radio" name="q3" value="b"> complete it as a civic duty</label>
+<label><input type="radio" name="q3" value="c"> compete to finish it first</label></div>
+<div class="question"><p>4. After a concern is raised, school leaders should…</p>
+<label><input type="radio" name="q4" value="a"> leave it to students to resolve</label>
+<label><input type="radio" name="q4" value="b"> use existing channels and close the loop</label>
+<label><input type="radio" name="q4" value="c"> create a separate reporting committee for this programme</label></div>
+<div class="question"><p>5. Adult role-modelling means…</p>
+<label><input type="radio" name="q5" value="a"> expecting students to follow rules while adults are exempt</label>
+<label><input type="radio" name="q5" value="b"> giving reminders only during assemblies</label>
+<label><input type="radio" name="q5" value="c"> adults consistently practising the behaviours they encourage</label></div>
+<button type="button" class="primary" onclick="scoreQuiz()">Check my answers</button>
+<button type="button" class="secondary" onclick="resetQuiz()">Try again</button>
+</form>
+<div id="quizResult" class="notice hidden" aria-live="polite"></div>
+</section>
+
+<section id="action" class="panel">
+<h2>My KV: 30-day civic behaviour action plan</h2>
+<p class="muted">Choose one priority behaviour. Keep the plan small, safe, observable and integrated into existing school practice.</p>
+<div class="card">
+<div class="grid">
+<div><label for="participant">Participant name</label><input id="participant" placeholder="Your name"></div>
+<div><label for="kv">Kendriya Vidyalaya</label><input id="kv" placeholder="School name"></div>
+<div><label for="region">KVS Region</label><select id="region"><option value="">Select region</option><option>Mumbai</option><option>Ahmedabad</option><option>Jaipur</option><option>Patna</option><option>Raipur</option><option>Other</option></select></div>
+</div>
+<label for="priority">Priority behaviour (observable)</label>
+<textarea id="priority" placeholder="e.g., Students and adults return shared materials to their designated place after use."></textarea>
+<label for="curriculumLink">Existing curriculum connection / grade</label>
+<input id="curriculumLink" placeholder="Grade, subject, lesson or handbook activity">
+<label for="model">Adult modelling commitment</label>
+<textarea id="model" placeholder="What will the principal, teachers and other adults visibly practise?"></textarea>
+<label for="routinePlan">Existing routine for repeated practice</label>
+<input id="routinePlan" placeholder="Assembly, classroom transition, water break, dispersal…">
+<label for="studentVoice">How will students participate safely?</label>
+<textarea id="studentVoice" placeholder="Observation, ideas, reflection, safe practice—not policing or hazardous work"></textarea>
+<label for="feedbackPlan">How will you observe, reflect and close the loop?</label>
+<textarea id="feedbackPlan" placeholder="What will be observed? Who responds? How will students be updated?"></textarea>
+<label for="support">Support or resource gap to address through existing channels</label>
+<textarea id="support" placeholder="If any"></textarea>
+<div class="grid">
+<div><label for="startDate">Start date</label><input type="date" id="startDate"></div>
+<div><label for="reviewDate">Review date (within 30 days)</label><input type="date" id="reviewDate"></div>
+</div>
+<label for="success">Evidence of progress (not a ranking)</label>
+<textarea id="success" placeholder="What change in routine or behaviour would you expect to notice?"></textarea>
+<div class="no-print">
+<button class="primary" onclick="downloadPlan()">Download my action plan (.txt)</button>
+<button class="secondary" onclick="window.print()">Print / Save as PDF</button>
+<button class="secondary" onclick="clearPlan()">Clear form</button>
+</div>
+<div id="planStatus" class="small muted" aria-live="polite"></div>
+</div>
+<div class="notice warning"><strong>Implementation guardrail:</strong> Do not create extra periods, separate committees or parallel reporting channels. Do not use shaming, competitions, student policing or tasks beyond students’ safe responsibilities.</div>
+</section>
+</main>
+
+<footer>
+KVS Civic Behaviour and Cleanliness Initiative · Participant learning tool · ZIET Mumbai<br>
+<span class="small">Standalone demo: entries remain in this browser session and are not submitted to a server. Download or print your work before closing.</span>
+</footer>
+
+<script>
+const navButtons=[...document.querySelectorAll('nav button')];
+navButtons.forEach(b=>b.addEventListener('click',()=>{
+navButtons.forEach(x=>x.classList.toggle('active',x===b));
+document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab));
+window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+function checkCase(){
+const v=document.querySelector('input[name="case"]:checked');
+const out=document.getElementById('caseFeedback');
+if(!v){out.textContent='Choose an option first.';return;}
+out.textContent=v.value==='b'
+?'Correct. Listen, route the concern through appropriate existing adult/school channels, and close the loop.'
+:'Reconsider: the handbook emphasises safety, dignity, adult responsibility and existing response channels.';
+out.style.color=v.value==='b'?'#08714b':'#a24a00';
+}
+
+const answers={q1:'b',q2:'c',q3:'a',q4:'b',q5:'c'};
+document.getElementById('quizForm').addEventListener('change',()=>{
+const n=Object.keys(answers).filter(k=>document.querySelector('input[name="'+k+'"]:checked')).length;
+document.getElementById('quizProgress').style.width=(n/5*100)+'%';
+});
+
+function scoreQuiz(){
+let score=0,answered=0;
+for(const [q,a] of Object.entries(answers)){
+const sel=document.querySelector('input[name="'+q+'"]:checked');
+if(sel){answered++;if(sel.value===a)score++;}
+}
+const box=document.getElementById('quizResult');
+box.classList.remove('hidden');
+box.innerHTML='<strong>Result: '+score+' / 5</strong><br>'+answered+' of 5 questions answered. Review the handbook safeguards and try again if useful. This is for reflection, not ranking.';
+box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function resetQuiz(){
+document.getElementById('quizForm').reset();
+document.getElementById('quizProgress').style.width='0%';
+document.getElementById('quizResult').classList.add('hidden');
+}
+
+const planFields=['participant','kv','region','priority','curriculumLink','model','routinePlan','studentVoice','feedbackPlan','support','startDate','reviewDate','success'];
+
+function planText(){
+let out='KVS CIVIC BEHAVIOUR & CLEANLINESS INITIATIVE\n30-DAY KV ACTION PLAN\n\n';
+for(const id of planFields){
+const el=document.getElementById(id);
+const label=el.labels && el.labels.length ? el.labels[0].textContent : id;
+out+=label.trim()+'\n'+(el.value||'—')+'\n\n';
+}
+out+='\nReminder: integrate with existing curriculum and routines; preserve dignity and safety; use existing reporting channels; close the loop.\n';
+return out;
+}
+
+function downloadPlan(){
+const content=planText();
+const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+const a=document.createElement('a');
+a.href=URL.createObjectURL(blob);
+a.download='KVS_Civic_Behaviour_30-Day_Action_Plan.txt';
+a.click();
+URL.revokeObjectURL(a.href);
+document.getElementById('planStatus').textContent='Your plan download has been prepared. Keep a copy for your school follow-up.';
+}
+
+function clearPlan(){
+if(confirm('Clear all action-plan fields?')){
+planFields.forEach(id=>document.getElementById(id).value='');
+document.getElementById('planStatus').textContent='Form cleared.';
+}
+}
+</script>
+</body>
+</html>
