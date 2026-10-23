@@ -146,8 +146,11 @@ main{max-width:none}
 <section id="handbook" class="panel">
 <div class="grid">
 <div class="card"><div class="eyebrow">Part 1</div><h3>Common across all grades</h3><p>Principal and teacher guidance, adult modelling, readiness and the school response process.</p></div>
+<div class="resource-slot" id="resources-part1"></div>
 <div class="card"><div class="eyebrow">Part 2</div><h3>Common across stages</h3><p>Classroom observation and stage-appropriate student feedback. These support learning; they are not inspection or scoring tools.</p></div>
+<div class="resource-slot" id="resources-part2"></div>
 <div class="card"><div class="eyebrow">Part 3</div><h3>Grade-wise components</h3><p>Curriculum links, core activity, teacher guidance, repeated practices, participation, reflection and relevant reinforcement.</p></div>
+<div class="resource-slot" id="resources-part3"></div>
 </div>
 <h2>Learning focus by stage</h2>
 <div class="grid">
@@ -224,8 +227,7 @@ main{max-width:none}
       <div><label for="resourceFilterSection">Filter by section</label><select id="resourceFilterSection"><option value="">All sections</option><option>General / All grades</option><option>Part 1 — Common across all grades</option><option>School Response Process</option><option>Part 2 — Common across stages</option><option>Part 3 — Grade-wise components</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option></select></div>
       <div><label for="resourceFilterType">Filter by type</label><select id="resourceFilterType"><option value="">All types</option><option>Presentation / PPT</option><option>Game</option><option>Classroom activity</option><option>Worksheet</option><option>Video</option><option>Lesson plan</option><option>Other</option></select></div>
     </div>
-    <h3>Approved shared resources</h3>
-    <div id="resourceList" class="grid"><div class="card"><p class="muted">Loading approved resources…</p></div></div>
+    <div class="notice">Approved resources are displayed inside the handbook section selected by the administrator.</div>
     <details class="card" style="margin-top:14px">
       <summary style="cursor:pointer;font-weight:bold;color:var(--navy)">Administrator: approve or remove submissions</summary>
       <p class="muted small">For administrator use only. Enter the secret admin key configured in Apps Script. Do not share this key with participants.</p>
@@ -418,24 +420,45 @@ function safeExternalUrl(url){
 }
 function resourceCard(item,admin=false){
   const card=document.createElement('div');card.className='card';
-  const tag=document.createElement('div');tag.className='eyebrow';tag.textContent=(item.Type||item.type||'Resource')+' · '+(item.Section||item.section||'General');card.appendChild(tag);
+  const tag=document.createElement('div');tag.className='eyebrow';tag.textContent=(item.Type||item.type||'Resource');card.appendChild(tag);
   const title=document.createElement('h3');title.textContent=item.Title||item.title||'Untitled resource';card.appendChild(title);
   const notes=item.Notes||item.notes||'';if(notes){const p=document.createElement('p');p.textContent=notes;card.appendChild(p);}
   const url=safeExternalUrl(item.URL||item.url||'');if(url){const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open resource ↗';a.style.fontWeight='bold';card.appendChild(a);}
   if(admin){
     const status=document.createElement('p');status.className='small muted';status.textContent='Status: '+(item.Status||'Pending');card.appendChild(status);
-    const approve=document.createElement('button');approve.type='button';approve.className='primary';approve.textContent='Approve & publish';approve.addEventListener('click',()=>adminAction('approve',item.ID));card.appendChild(approve);
+    const placement=document.createElement('select');placement.setAttribute('aria-label','Choose handbook section for this resource');placement.innerHTML=
+      '<option value="">Choose handbook placement…</option>'+
+      '<option>Part 1 — Common across all grades</option>'+
+      '<option>School Response Process</option>'+
+      '<option>Part 2 — Common across stages</option>'+
+      '<option>Part 3 — Grade-wise components</option>'+
+      '<option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option>'+
+      '<option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option>'+
+      '<option>General / All grades</option>';
+    const current=item.Section||item.section||'';if([...placement.options].some(o=>o.value===current))placement.value=current;
+    placement.style.margin='8px 0';placement.style.width='100%';card.appendChild(placement);
+    const approve=document.createElement('button');approve.type='button';approve.className='primary';approve.textContent='Approve & publish in selected section';approve.addEventListener('click',()=>adminAction('approve',item.ID,placement.value));card.appendChild(approve);
     const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='Delete';remove.addEventListener('click',()=>adminAction('delete',item.ID));card.appendChild(remove);
   }
   return card;
 }
 function renderResources(){
-  const list=document.getElementById('resourceList');if(!list)return;
-  const section=document.getElementById('resourceFilterSection').value,type=document.getElementById('resourceFilterType').value;
-  const items=sharedResources.filter(x=>(!section||(x.Section||x.section)===section)&&(!type||(x.Type||x.type)===type));
-  list.innerHTML='';
-  if(!items.length){list.innerHTML='<div class="card"><p class="muted">No approved resources match these filters yet.</p></div>';return;}
-  items.forEach(item=>list.appendChild(resourceCard(item)));
+  const targets={
+    'Part 1 — Common across all grades':'resources-part1',
+    'School Response Process':'resources-part1',
+    'Part 2 — Common across stages':'resources-part2',
+    'Part 3 — Grade-wise components':'resources-part3',
+    'General / All grades':'resources-part1'
+  };
+  const slots=['resources-part1','resources-part2','resources-part3'];
+  slots.forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});
+  sharedResources.forEach(item=>{
+    const section=item.Section||item.section||'General / All grades';
+    let target=targets[section];
+    if(/^Grade\s*\d+/i.test(section))target='resources-part3';
+    const slot=document.getElementById(target||'resources-part1');
+    if(slot)slot.appendChild(resourceCard(item));
+  });
 }
 async function loadSharedResources(){
   const status=document.getElementById('resourceStatus');
@@ -455,11 +478,12 @@ document.getElementById('resourceForm')?.addEventListener('submit',async functio
 });
 document.getElementById('resourceFilterSection')?.addEventListener('change',renderResources);
 document.getElementById('resourceFilterType')?.addEventListener('change',renderResources);
-async function adminAction(action,id){
+async function adminAction(action,id,chosenSection){
   const key=document.getElementById('adminKey').value.trim(),out=document.getElementById('adminStatus');
   if(!key){out.textContent='Enter the administrator key first.';return;}
-  if(!confirm(action==='approve'?'Publish this resource for all participants?':'Permanently delete this submission?'))return;
-  try{await apiPost({action,id,adminKey:key});out.textContent='Request sent. Refresh pending submissions in a moment.';setTimeout(loadPending,1800);}
+  if(action==='approve'&&!chosenSection){out.textContent='Choose the handbook placement before publishing.';return;}
+  if(!confirm(action==='approve'?'Publish this resource in the selected handbook section?':'Permanently delete this submission?'))return;
+  try{await apiPost({action,id,adminKey:key,...(action==='approve'?{section:chosenSection}: {})});out.textContent='Request sent. Refresh pending submissions in a moment.';setTimeout(loadPending,1800);if(action==='approve')setTimeout(loadSharedResources,2200);}
   catch(e){out.textContent='Request failed: '+e.message;}
 }
 async function loadPending(){
