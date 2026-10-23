@@ -87,6 +87,7 @@ main{max-width:none}
 <nav aria-label="Main navigation">
 <button class="active" data-tab="home">Overview</button>
 <button data-tab="handbook">Handbook at a Glance</button>
+<button data-tab="originalPages">Original Handbook Pages</button>
 <button data-tab="activities">Workshop Activities</button>
 <button data-tab="quiz">Quick Check</button>
 <button data-tab="action">My KV Action Plan</button>
@@ -162,6 +163,30 @@ main{max-width:none}
 <div class="card"><div class="step"><div class="num">4</div><div><strong>Close the loop</strong><br><span class="muted">Tell students what happened, as appropriate.</span></div></div></div>
 </div>
 <div class="notice warning"><strong>Remember:</strong> Children can observe, suggest and practise safe habits. Adults remain responsible for hazards, technical work, institutional decisions and ensuring concerns receive a response.</div>
+</section>
+
+
+<section id="originalPages" class="panel">
+  <div class="card hero-card">
+    <div class="eyebrow">Original source document</div>
+    <h2 style="margin:6px 0 8px">Read the Actual Handbook Pages</h2>
+    <p>Open the original <strong>KVS Civic Behaviour and Cleanliness Programme — Integrated Grade-Wise School Packs, Grades 1–10</strong> here. Use the page controls to navigate the PDF. Printed page numbers may differ from PDF page positions because the handbook notes that final page numbers are pending.</p>
+    <div class="grid">
+      <div><label for="pdfPage">Go to PDF page</label><input id="pdfPage" type="number" min="1" value="1" step="1"></div>
+      <div><label for="stageJump">Jump to section</label><select id="stageJump"><option value="1">Start of handbook</option><option value="1">Message / About the programme</option><option value="1">Contents and programme overview</option><option value="1">Grade-wise packs (find using PDF search)</option></select></div>
+    </div>
+    <button class="primary" type="button" onclick="goToHandbookPage()">Open selected page</button>
+    <a class="btn" style="display:inline-block;text-decoration:none;margin-left:6px" href="./handbook.pdf" target="_blank" rel="noopener">Open handbook in new tab ↗</a>
+    <a class="btn" style="display:inline-block;text-decoration:none;margin-left:6px;background:#16845b" href="./handbook.pdf" download="KVS_Civic_Behaviour_and_Cleanliness_Handbook.pdf">Download original PDF ↓</a>
+    <div class="notice warning" id="pdfStatus" role="status">The viewer expects the original PDF file to be uploaded to this repository as <strong>handbook.pdf</strong>. If the viewer shows “file not found”, upload the supplied handbook PDF to the repository root with that exact filename.</div>
+  </div>
+  <div class="card" style="margin-top:14px;padding:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px">
+      <strong>Original PDF viewer</strong><span class="muted small">Use the PDF viewer controls to zoom, search and print.</span>
+    </div>
+    <iframe id="handbookFrame" title="Original KVS Civic Behaviour and Cleanliness Handbook PDF" src="./handbook.pdf#page=1&view=FitH" style="width:100%;height:min(78vh,900px);min-height:520px;border:1px solid var(--line);border-radius:10px;background:#f7f9fc"></iframe>
+  </div>
+  <div class="notice"><strong>Workshop use:</strong> Read the original guidance first, then return to “Workshop Activities” and “My KV Action Plan”. Do not treat the handbook’s grade-wise activities as a separate subject or additional workload.</div>
 </section>
 
 <section id="activities" class="panel">
@@ -311,6 +336,15 @@ navButtons.forEach(x=>x.classList.toggle('active',x===b));
 document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab));
 window.scrollTo({top:0,behavior:'smooth'});
 }));
+
+function goToHandbookPage(){
+const input=document.getElementById('pdfPage');
+const page=Math.max(1,parseInt(input.value||'1',10));
+input.value=page;
+document.getElementById('handbookFrame').src='./handbook.pdf#page='+page+'&view=FitH';
+document.getElementById('pdfStatus').innerHTML='Showing PDF page <strong>'+page+'</strong>. Use the PDF search controls to locate grade-wise activities.';
+}
+document.getElementById('stageJump')?.addEventListener('change',e=>{document.getElementById('pdfPage').value=e.target.value;goToHandbookPage();});
 
 function checkCase(){
 const v=document.querySelector('input[name="case"]:checked');
