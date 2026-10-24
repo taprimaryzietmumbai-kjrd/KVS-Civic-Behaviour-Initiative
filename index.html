@@ -381,6 +381,51 @@ main{max-width:none}
 <label for="response">What would you say to students after the concern is addressed?</label>
 <textarea id="response" placeholder="Draft a brief, respectful follow-up"></textarea>
 </div>
+
+<div class="card activity" style="margin-top:14px;border-left-color:#d97706">
+  <div class="eyebrow">Workshop Activity · Adult Modelling · 40–50 minutes</div>
+  <h3>Case Studies: Children Learn What Adults Practise</h3>
+  <p>Choose a case study, select your workshop role and name from the existing role roster, then record your group's recommendations. Discuss the case without blaming individuals. Use the recommendations to identify adult behaviours that can become part of everyday school routines.</p>
+  <div class="grid">
+    <div><label for="amCase">Select case study</label>
+      <select id="amCase">
+        <option value="">Choose a case study…</option>
+        <option value="The Principal Who Walks Past the Litter">1. The Principal Who Walks Past the Litter</option>
+        <option value="Respect Begins with How We Treat Support Staff">2. Respect Begins with How We Treat Support Staff</option>
+        <option value="The Leaking Tap and the Responsible Adult">3. The Leaking Tap and the Responsible Adult</option>
+        <option value="One Rule for Students, Another for Adults?">4. One Rule for Students, Another for Adults?</option>
+        <option value="Public Blame or Constructive Correction?">5. Public Blame or Constructive Correction?</option>
+      </select>
+    </div>
+    <div><label for="amGroup">Group name / number</label>
+      <select id="amGroup"><option value="">Choose group…</option><option>1. Afroz Shah</option><option>2. Bezwada Wilson</option><option>3. M.C. Mehta</option><option>4. Arunachalam Muruganantham</option><option>5. Kunwar Bai</option></select>
+    </div>
+    <div><label for="amRole">Your workshop role</label>
+      <select id="amRole">
+        <option value="">Choose your role…</option>
+        <option>Facilitator</option><option>Collector / Scribe (Recorder)</option><option>Co-facilitator</option><option>Timekeeper</option><option>Participants</option><option>Decider</option><option>Domain Experts</option>
+      </select>
+    </div>
+    <div><label for="amName">Participant name</label><select id="amName"><option value="">Choose participant…</option></select></div>
+  </div>
+  <label for="amObserved">1. What adult behaviour is being modelled in this case?</label>
+  <textarea id="amObserved" placeholder="Describe what children see or hear."></textarea>
+  <label for="amImpact">2. What might students learn from this behaviour?</label>
+  <textarea id="amImpact" placeholder="Consider cleanliness, dignity, safety, fairness or shared responsibility."></textarea>
+  <label for="amBetter">3. What should the adult do instead?</label>
+  <textarea id="amBetter" placeholder="Write a calm, respectful and constructive response."></textarea>
+  <label for="amRoutine">4. Which existing school routine or process can reinforce this behaviour?</label>
+  <textarea id="amRoutine" placeholder="e.g. walkthrough, assembly, classroom routine, existing reporting channel."></textarea>
+  <label for="amCommitment">5. Group recommendation / one practical commitment</label>
+  <textarea id="amCommitment" placeholder="What will the group recommend adults practise consistently?"></textarea>
+  <div class="notice">Recommendations should focus on observable adult actions, dignity, safety and follow-through. Avoid punishment, public shaming, ranking or blaming individuals.</div>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap" class="no-print">
+    <button type="button" class="primary" id="amSavePdf">Save Recommendations as PDF</button>
+    <button type="button" class="secondary" id="amClear">Clear this activity</button>
+    <span id="amStatus" class="small muted" role="status"></span>
+  </div>
+  <p class="small muted no-print">The PDF opens a print window. In the print dialog, choose “Save as PDF” as the destination to download a copy. Your entries are also saved in this browser while you work.</p>
+</div>
 </section>
 
 <section id="quiz" class="panel">
@@ -613,6 +658,53 @@ document.getElementById('submitActivity1')?.addEventListener('click',async()=>{
   }catch(e){status.textContent='Could not send submission: '+e.message;}
   finally{button.disabled=false;button.textContent='Submit Activity 1 response to Google Sheet';}
 });
+
+
+// Adult Modelling case-study activity: roster, local draft saving and printable PDF.
+(function(){
+ const ids=['amCase','amGroup','amRole','amName','amObserved','amImpact','amBetter','amRoutine','amCommitment'];
+ const key='kvsCivicAdultModellingDraftV1';
+ const nameSelect=document.getElementById('amName');
+ const source=document.getElementById('volFacilitator');
+ if(source && nameSelect){
+   [...source.options].forEach(o=>{if(o.value){const opt=document.createElement('option');opt.value=o.value;opt.textContent=o.textContent;nameSelect.appendChild(opt);}});
+ }
+ function saveDraft(){
+   const data={};ids.forEach(id=>{const el=document.getElementById(id);if(el)data[id]=el.value;});
+   try{localStorage.setItem(key,JSON.stringify(data));}catch(e){}
+ }
+ try{
+   const saved=JSON.parse(localStorage.getItem(key)||'{}');
+   ids.forEach(id=>{const el=document.getElementById(id);if(el&&saved[id]!==undefined)el.value=saved[id];});
+ }catch(e){}
+ ids.forEach(id=>document.getElementById(id)?.addEventListener('input',saveDraft));
+ ids.forEach(id=>document.getElementById(id)?.addEventListener('change',saveDraft));
+ document.getElementById('amClear')?.addEventListener('click',()=>{
+   if(!confirm('Clear the Adult Modelling case-study entries in this browser?'))return;
+   ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+   try{localStorage.removeItem(key);}catch(e){}
+   document.getElementById('amStatus').textContent='Activity entries cleared.';
+ });
+ document.getElementById('amSavePdf')?.addEventListener('click',()=>{
+   const get=id=>document.getElementById(id)?.value.trim()||'Not provided';
+   if(get('amCase')==='Not provided'){document.getElementById('amStatus').textContent='Please select a case study first.';return;}
+   if(!['amObserved','amImpact','amBetter','amRoutine','amCommitment'].some(id=>get(id)!=='Not provided')){
+     document.getElementById('amStatus').textContent='Please enter at least one recommendation before saving.';return;
+   }
+   const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+   const fields=[
+     ['Case Study',get('amCase')],['Group',get('amGroup')],['Participant',get('amName')],['Workshop Role',get('amRole')],
+     ['1. Adult behaviour being modelled',get('amObserved')],['2. What students might learn',get('amImpact')],
+     ['3. Better adult response',get('amBetter')],['4. Existing routine or process',get('amRoutine')],
+     ['5. Group recommendation / practical commitment',get('amCommitment')]
+   ];
+   const doc='<!doctype html><html><head><meta charset="utf-8"><title>Adult Modelling Recommendations</title><style>body{font-family:Arial,sans-serif;color:#17243a;line-height:1.5;margin:28px}h1{color:#12356a;font-size:22px}h2{color:#16845b;font-size:15px;margin:18px 0 5px}.meta{background:#eef4fb;padding:12px;border-radius:8px}p{white-space:pre-wrap;margin:4px 0 10px}.foot{margin-top:28px;border-top:1px solid #ccc;padding-top:8px;font-size:11px;color:#555}@media print{button{display:none}}</style></head><body><h1>KVS Civic Behaviour &amp; Cleanliness Programme</h1><h2>Adult Modelling — Case Study Recommendations</h2><div class="meta">'+fields.slice(0,4).map(([k,v])=>'<p><strong>'+esc(k)+':</strong> '+esc(v)+'</p>').join('')+'</div>'+fields.slice(4).map(([k,v])=>'<h2>'+esc(k)+'</h2><p>'+esc(v)+'</p>').join('')+'<div class="foot">ZIET Mumbai · Workshop participant output · Focus on dignity, safety, adult modelling and constructive follow-through.</div><script>window.onload=function(){setTimeout(function(){window.print()},300)};<\/script></body></html>';
+   const w=window.open('','_blank');
+   if(!w){document.getElementById('amStatus').textContent='Pop-up blocked. Allow pop-ups for this site and try again.';return;}
+   w.document.open();w.document.write(doc);w.document.close();saveDraft();
+   document.getElementById('amStatus').textContent='Print window opened. Choose “Save as PDF” in the destination menu.';
+ });
+})();
 
 function checkCase(){
 const v=document.querySelector('input[name="case"]:checked');
