@@ -432,6 +432,7 @@ main{max-width:none}
         <option value="">Choose your role…</option>
         <option>Facilitator</option><option>Collector / Scribe (Recorder)</option><option>Co-facilitator</option><option>Timekeeper</option><option>Participants</option><option>Decider</option><option>Domain Experts</option>
       </select>
+      <div id="amRoleDescription" class="notice" aria-live="polite" style="margin-top:10px"><strong>Role duties and responsibilities:</strong> Select a role to see what you are expected to contribute.</div>
     </div>
     <div><label for="amName">Participant name</label><select id="amName"><option value="">Choose participant…</option></select></div>
   </div>
@@ -789,6 +790,22 @@ document.getElementById('submitActivity1')?.addEventListener('click',async()=>{
   box.innerHTML=selected?'<strong>Civic enthusiast:</strong> '+groupDescriptions[selected]:'<strong>Civic enthusiast:</strong> Select a group to learn about the person and the civic contribution that inspires its name.';
  }
  document.getElementById('amGroup')?.addEventListener('change',updateGroupDescription);
+ const roleDescriptions={
+  'Facilitator':'Guide the discussion, keep the group focused on the case and handbook principles, invite every member to contribute, and ensure the group identifies a calm, respectful and practical adult response.',
+  'Collector / Scribe (Recorder)':'Record the group’s observations, likely impact on students, improved adult response, suggested school routine and final commitment. Capture the group’s recommendations clearly for submission.',
+  'Co-facilitator':'Support the facilitator, draw in quieter voices, clarify the task and check that recommendations reflect safety, dignity, inclusion and shared responsibility.',
+  'Timekeeper':'Track the activity time, give brief reminders and help the group leave enough time for recommendations, peer feedback and reflection.',
+  'Participants':'Actively examine the case, share practical perspectives, listen respectfully, connect ideas to everyday school life, and help agree on realistic recommendations without blaming or shaming individuals.',
+  'Decider':'Help the group reach a clear, evidence-informed decision. Check that the proposed response is respectful, feasible, aligned with existing school processes and clear about what adults—not children—must handle.',
+  'Domain Experts':'Contribute relevant professional or subject knowledge, test suggestions against the handbook’s guidance, and help the group consider curriculum links, school routines, accessibility, safety and follow-up.'
+ };
+ function updateRoleDescription(){
+  const selected=document.getElementById('amRole')?.value||'';
+  const box=document.getElementById('amRoleDescription');
+  if(!box)return;
+  box.innerHTML=selected?'<strong>Role duties and responsibilities:</strong> '+roleDescriptions[selected]:'<strong>Role duties and responsibilities:</strong> Select a role to see what you are expected to contribute.';
+ }
+ document.getElementById('amRole')?.addEventListener('change',updateRoleDescription);
  const key='kvsCivicAdultModellingDraftV1';
  const nameSelect=document.getElementById('amName');
  const source=document.getElementById('volFacilitator');
@@ -807,6 +824,7 @@ document.getElementById('submitActivity1')?.addEventListener('click',async()=>{
  ids.forEach(id=>document.getElementById(id)?.addEventListener('change',saveDraft));
  updateCaseDescription();
  updateGroupDescription();
+ updateRoleDescription();
  document.getElementById('amClear')?.addEventListener('click',()=>{
    if(!confirm('Clear the Adult Modelling case-study entries in this browser?'))return;
    ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
