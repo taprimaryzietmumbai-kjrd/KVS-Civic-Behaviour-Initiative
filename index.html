@@ -451,6 +451,51 @@ main{max-width:none}
     <span id="amStatus" class="small muted" role="status"></span>
   </div>
   <p class="small muted no-print">The PDF opens a print window. In the print dialog, choose “Save as PDF” as the destination to download a copy. Your entries are also saved in this browser while you work.</p>
+
+<div class="card activity" id="gradePackActivity" style="margin-top:14px;border-left:5px solid #7c3aed">
+  <div class="eyebrow">Workshop Group Activity · Grade Pack Exploration · 35–40 minutes</div>
+  <h3>Reading a Grade Pack: From Programme Design to Classroom Practice</h3>
+  <p><strong>Purpose:</strong> Use the Handbook’s Part A and Part B together to turn one grade’s pack into a practical, safe, curriculum-linked plan. Every group should keep the four connected routes visible: <strong>Classroom Learning, School Practice, Student Participation, and Reflection / Home–Community Connection.</strong></p>
+  <div class="notice"><strong>Group process:</strong> Select a grade pack. Part A identifies the grade at a glance; Part B explains how the experience unfolds. Use the named curriculum lesson as the starting point, not a separate project. Keep safety, dignity, inclusion, adult modelling and existing school routines explicit.</div>
+  <div class="grid">
+    <div><label for="gpGroup">Group name / number</label><select id="gpGroup" required><option value="">Choose group…</option><option value="1. Afroz Shah">1. Afroz Shah</option><option value="2. Bezwada Wilson">2. Bezwada Wilson</option><option value="3. M.C. Mehta">3. M.C. Mehta</option><option value="4. Arunachalam Murugananthan">4. Arunachalam Murugananthan</option><option value="5. Kunwar Bai">5. Kunwar Bai</option></select></div>
+    <div><label for="gpGrade">Grade pack selected</label><select id="gpGrade" required><option value="">Choose grade…</option><option value="Grade 1">Grade 1</option><option value="Grade 2">Grade 2</option><option value="Grade 3">Grade 3</option><option value="Grade 4">Grade 4</option><option value="Grade 5">Grade 5</option><option value="Grade 6">Grade 6</option><option value="Grade 7">Grade 7</option><option value="Grade 8">Grade 8</option><option value="Grade 9">Grade 9</option><option value="Grade 10">Grade 10</option></select></div>
+    <div><label for="gpRole">Your workshop role</label><select id="gpRole" required><option value="">Choose role…</option><option>Facilitator</option><option>Collector / Scribe (Recorder)</option><option>Co-facilitator</option><option>Timekeeper</option><option>Participants</option><option>Decider</option><option>Domain Experts</option></select></div>
+    <div><label for="gpName">Participant name</label><select id="gpName" required><option value="">Choose participant…</option></select></div>
+  </div>
+  <h4>Part A · Programme Design: the grade at a glance</h4>
+  <label for="gpCentral">1. Central question — what question does this grade experience explore?</label><textarea id="gpCentral" required placeholder="Use the wording or meaning from the selected grade pack."></textarea>
+  <label for="gpShift">2. Behaviour shift — what observable “I can…” statement marks progress?</label><textarea id="gpShift" required placeholder="State what students should increasingly be able to do."></textarea>
+  <div class="grid">
+    <div><label for="gpCurriculum">3. Existing curriculum link — subject, lesson and starting point</label><textarea id="gpCurriculum" required placeholder="Name the existing textbook lesson / curricular starting point."></textarea></div>
+    <div><label for="gpCore">4. Core activity — steps, materials and intended output</label><textarea id="gpCore" required placeholder="Describe a ready-to-use activity, not a separate project."></textarea></div>
+  </div>
+  <label for="gpReinforcement">5. Reinforcement — which later lesson or existing school routine will revisit the idea?</label><textarea id="gpReinforcement" required placeholder="Name the routine and when it naturally happens."></textarea>
+  <h4>Connect all four routes</h4>
+  <div class="grid">
+    <div><label for="gpClassroom">6. Classroom learning</label><textarea id="gpClassroom" required placeholder="What will students learn and practise in the lesson?"></textarea></div>
+    <div><label for="gpSchool">7. School practice</label><textarea id="gpSchool" required placeholder="Which existing school routine/shared space supports practice?"></textarea></div>
+    <div><label for="gpParticipation">8. Student participation</label><textarea id="gpParticipation" required placeholder="How can students observe, suggest or contribute safely?"></textarea></div>
+    <div><label for="gpHome">9. Reflection / home–community connection</label><textarea id="gpHome" required placeholder="How will students reflect or connect learning with home/community without burdening families?"></textarea></div>
+  </div>
+  <h4>Part B · Teacher Guidance: how the experience unfolds</h4>
+  <div class="grid">
+    <div><label for="gpAdult">10. Adult modelling and shared responsibility</label><textarea id="gpAdult" required placeholder="What will adults visibly practise? What remains an adult responsibility?"></textarea></div>
+    <div><label for="gpSafety">11. Safety, dignity and inclusion</label><textarea id="gpSafety" required placeholder="What must children never handle? How will every child participate meaningfully?"></textarea></div>
+  </div>
+  <h4>Peer feedback and reflection · Required</h4>
+  <label for="gpFeedback">12. Feedback from another group — one strength and one practical suggestion</label><textarea id="gpFeedback" required placeholder="Strength: … / Suggestion to improve feasibility, inclusion, safety or alignment: …"></textarea>
+  <label for="gpReflection">13. Group reflection — what will you retain, change or check before classroom implementation?</label><textarea id="gpReflection" required placeholder="What did the handbook help clarify? What needs adaptation or confirmation?"></textarea>
+  <label for="gpEvidence">14. Evidence of success — what will adults observe, and how will students receive a respectful follow-up?</label><textarea id="gpEvidence" required placeholder="Use observable evidence, not marks, rankings, blame or public shaming."></textarea>
+  <div class="notice warning"><strong>Quality check before submission:</strong> Is the activity linked to an existing lesson? Are all four routes connected? Are adult responsibilities, safety, dignity and inclusion clear? Is the follow-up feasible within existing lesson and school time?</div>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap" class="no-print">
+    <button type="button" class="primary" id="gpSavePdf">Prepare PDF / Print</button>
+    <button type="button" class="primary" id="gpSubmit">Submit group plan to Google Sheet</button>
+    <button type="button" class="secondary" id="gpClear">Clear this activity</button>
+    <span id="gpStatus" class="small muted" role="status"></span>
+  </div>
+  <p class="small muted no-print">Your draft is saved in this browser while you work. The PDF button opens the print dialog; choose “Save as PDF”. Google Drive PDF archiving requires the Apps Script backend to create and store the PDF file; this form will submit the plan data to the existing generic activity endpoint.</p>
+</div>
 </div>
 </section>
 
@@ -685,6 +730,31 @@ document.getElementById('submitActivity1')?.addEventListener('click',async()=>{
   finally{button.disabled=false;button.textContent='Submit Activity 1 response to Google Sheet';}
 });
 
+
+
+ // Grade Pack Exploration: roster-selectable group plan, required peer feedback/reflection, PDF print and generic activity submission.
+ (function(){
+  const ids=['gpGroup','gpGrade','gpRole','gpName','gpCentral','gpShift','gpCurriculum','gpCore','gpReinforcement','gpClassroom','gpSchool','gpParticipation','gpHome','gpAdult','gpSafety','gpFeedback','gpReflection','gpEvidence'];
+  const key='kvsCivicGradePackActivityV1';
+  const nameSelect=document.getElementById('gpName');
+  const source=document.getElementById('volFacilitator');
+  if(source&&nameSelect){[...source.options].forEach(o=>{if(o.value){const opt=document.createElement('option');opt.value=o.value;opt.textContent=o.textContent;nameSelect.appendChild(opt);}});}
+  const val=id=>document.getElementById(id)?.value.trim()||'';
+  function saveDraft(){const data={};ids.forEach(id=>data[id]=val(id));try{localStorage.setItem(key,JSON.stringify(data));}catch(e){}}
+  try{const saved=JSON.parse(localStorage.getItem(key)||'{}');ids.forEach(id=>{const el=document.getElementById(id);if(el&&saved[id]!==undefined)el.value=saved[id];});}catch(e){}
+  ids.forEach(id=>{document.getElementById(id)?.addEventListener('input',saveDraft);document.getElementById(id)?.addEventListener('change',saveDraft);});
+  function fields(){return [
+   ['Group',val('gpGroup')],['Grade pack',val('gpGrade')],['Participant',val('gpName')],['Workshop role',val('gpRole')],
+   ['Part A · Central question',val('gpCentral')],['Behaviour shift (“I can…”)',val('gpShift')],['Existing curriculum link',val('gpCurriculum')],['Core activity',val('gpCore')],['Reinforcement',val('gpReinforcement')],
+   ['Classroom learning',val('gpClassroom')],['School practice',val('gpSchool')],['Student participation',val('gpParticipation')],['Reflection / home–community connection',val('gpHome')],
+   ['Adult modelling and shared responsibility',val('gpAdult')],['Safety, dignity and inclusion',val('gpSafety')],['Peer feedback',val('gpFeedback')],['Group reflection',val('gpReflection')],['Evidence of success and follow-up',val('gpEvidence')]
+  ];}
+  function validate(){const missing=ids.filter(id=>!val(id));if(missing.length){document.getElementById('gpStatus').textContent='Please complete all fields, including peer feedback, reflection and evidence of success, before submitting.';document.getElementById(missing[0]).focus();return false;}return true;}
+  function openPdf(){if(!validate())return false;const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));const f=fields();const doc='<!doctype html><html><head><meta charset="utf-8"><title>Grade Pack Group Activity</title><style>body{font-family:Arial,sans-serif;color:#17243a;line-height:1.5;margin:28px}h1{color:#12356a;font-size:22px}h2{color:#6636a8;font-size:15px;margin:18px 0 5px}p{white-space:pre-wrap;margin:4px 0 10px}.meta{background:#f1ebff;padding:12px;border-radius:8px}.foot{margin-top:28px;border-top:1px solid #ccc;padding-top:8px;font-size:11px;color:#555}@media print{body{margin:16mm}}</style></head><body><h1>KVS Civic Behaviour &amp; Cleanliness Programme</h1><h2>Workshop Group Activity: Reading a Grade Pack — From Programme Design to Classroom Practice</h2><div class="meta">'+f.slice(0,4).map(([k,v])=>'<p><strong>'+esc(k)+':</strong> '+esc(v)+'</p>').join('')+'</div>'+f.slice(4).map(([k,v])=>'<h2>'+esc(k)+'</h2><p>'+esc(v)+'</p>').join('')+'<div class="foot">ZIET Mumbai · Workshop group output · Built around the Handbook’s Part A and Part B and four connected routes.</div><script>window.onload=function(){setTimeout(function(){window.print()},300)};<\\/script></body></html>';const w=window.open('','_blank');if(!w){document.getElementById('gpStatus').textContent='Pop-up blocked. Allow pop-ups for this site and try again.';return false;}w.document.open();w.document.write(doc);w.document.close();saveDraft();document.getElementById('gpStatus').textContent='Print window opened. Choose “Save as PDF”.';return true;}
+  document.getElementById('gpSavePdf')?.addEventListener('click',openPdf);
+  document.getElementById('gpSubmit')?.addEventListener('click',async()=>{const status=document.getElementById('gpStatus'),b=document.getElementById('gpSubmit');if(!validate())return;const responseData={};fields().forEach(([k,v])=>responseData[k]=v);const payload={action:'submitActivity',activityId:'GRADE_PACK_EXPLORATION',activityTitle:'Reading a Grade Pack: From Programme Design to Classroom Practice',groupName:val('gpGroup'),submittedBy:val('gpName'),responseData,submittedAt:new Date().toISOString()};b.disabled=true;status.textContent='Submitting group plan to the shared register…';try{await apiPost(payload);saveDraft();status.textContent='Submission request sent to the generic activity endpoint. For a Drive-stored PDF, the Apps Script backend must also generate and save a PDF file; this frontend cannot confirm Drive storage.';}catch(e){status.textContent='Could not submit the plan. Please try again. '+e.message;}finally{b.disabled=false;}});
+  document.getElementById('gpClear')?.addEventListener('click',()=>{if(!confirm('Clear the Grade Pack activity entries saved in this browser?'))return;ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});try{localStorage.removeItem(key);}catch(e){}document.getElementById('gpStatus').textContent='Grade Pack activity cleared.';});
+ })();
 
 // Adult Modelling case-study activity: roster, local draft saving and printable PDF.
 (function(){
