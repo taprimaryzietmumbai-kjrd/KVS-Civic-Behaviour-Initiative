@@ -1039,7 +1039,7 @@ document.getElementById('iceDeckFile').addEventListener('change',async function(
    const imageRel=rels.find(rel=>(rel.getAttribute('Type')||'').includes('/image'));
    if(!imageRel)continue;
    const target=imageRel.getAttribute('Target');
-   const mediaPath=target.startsWith('/')?target.slice(1):'ppt/slides/'+target.replace(/^\.\.\//,'');
+   const mediaPath=target.startsWith('/')?target.slice(1):(target.startsWith('../')?'ppt/'+target.slice(3):'ppt/slides/'+target);
    const media=zip.file(mediaPath);
    if(!media)continue;
    const blob=await media.async('blob');
