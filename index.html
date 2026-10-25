@@ -421,6 +421,7 @@ main{max-width:none}
         <option value="One Rule for Students, Another for Adults?">4. One Rule for Students, Another for Adults?</option>
         <option value="Public Blame or Constructive Correction?">5. Public Blame or Constructive Correction?</option>
       </select>
+      <div id="amCaseDescription" class="notice" aria-live="polite" style="margin-top:10px"><strong>Case description:</strong> Select a case study to read the situation your group will analyse.</div>
     </div>
     <div><label for="amGroup">Group name / number</label>
       <select id="amGroup"><option value="">Choose group…</option><option>1. Afroz Shah</option><option>2. Bezwada Wilson</option><option>3. M.C. Mehta</option><option>4. Arunachalam Muruganantham</option><option>5. Kunwar Bai</option></select>
@@ -759,6 +760,20 @@ document.getElementById('submitActivity1')?.addEventListener('click',async()=>{
 // Adult Modelling case-study activity: roster, local draft saving and printable PDF.
 (function(){
  const ids=['amCase','amGroup','amRole','amName','amObserved','amImpact','amBetter','amRoutine','amCommitment'];
+ const caseDescriptions={
+  'The Principal Who Walks Past the Litter': 'A principal notices litter in a shared school space but walks past without responding. Discuss what students may learn when a school leader ignores shared responsibility, and how the principal can model a calm, practical response without shaming anyone.',
+  'Respect Begins with How We Treat Support Staff': 'Students observe how teachers and school leaders speak to cleaning, security, gardening and other support staff. Examine whether adults demonstrate dignity and courtesy consistently, and identify respectful everyday actions students can safely emulate.',
+  'The Leaking Tap and the Responsible Adult': 'A teacher notices a leaking tap but assumes someone else will deal with it. Distinguish what students can safely observe and report from repairs that must remain an adult responsibility, including how to report the concern and close the loop.',
+  'One Rule for Students, Another for Adults?': 'Students are expected to conserve water, keep spaces clean and follow shared routines, but adults make exceptions for themselves. Explore fairness, consistency and how adults can acknowledge a lapse, correct it and follow the same reasonable routines expected of students.',
+  'Public Blame or Constructive Correction?': 'After finding a messy shared space, an adult publicly blames a class or individual students. Compare the effects of blame and shaming with a respectful, fact-finding response that protects dignity, identifies the practical issue and supports constructive follow-through.'
+ };
+ function updateCaseDescription(){
+  const selected=document.getElementById('amCase')?.value||'';
+  const box=document.getElementById('amCaseDescription');
+  if(!box)return;
+  box.innerHTML=selected?'<strong>Case description:</strong> '+caseDescriptions[selected]:'<strong>Case description:</strong> Select a case study to read the situation your group will analyse.';
+ }
+ document.getElementById('amCase')?.addEventListener('change',updateCaseDescription);
  const key='kvsCivicAdultModellingDraftV1';
  const nameSelect=document.getElementById('amName');
  const source=document.getElementById('volFacilitator');
@@ -775,6 +790,7 @@ document.getElementById('submitActivity1')?.addEventListener('click',async()=>{
  }catch(e){}
  ids.forEach(id=>document.getElementById(id)?.addEventListener('input',saveDraft));
  ids.forEach(id=>document.getElementById(id)?.addEventListener('change',saveDraft));
+ updateCaseDescription();
  document.getElementById('amClear')?.addEventListener('click',()=>{
    if(!confirm('Clear the Adult Modelling case-study entries in this browser?'))return;
    ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
