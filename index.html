@@ -339,11 +339,12 @@ main{max-width:none}
   <label for="iceTakeaway">One insight I will take back to my school</label>
   <textarea id="iceTakeaway" placeholder="Record one realistic action that can be integrated into an existing school routine."></textarea>
   <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
+    <button type="button" class="primary" id="iceSubmit">Submit response to Google Sheet</button>
     <button type="button" class="secondary" id="icePrint">Prepare PDF / Print</button>
     <button type="button" class="secondary" id="iceClear">Clear / Draw Another Card</button>
-    <span id="iceStatus" class="small muted" role="status"></span>
+    <span id="iceStatus" class="small muted" role="status" aria-live="polite"></span>
   </div>
-  <p class="small muted">To save as PDF, choose “Save as PDF” in the browser’s print dialog. This activity is placed at the top of Workshop Activities.</p>
+  <p class="small muted">Submit your response to send it to the workshop response register. PDF printing remains available through the browser’s “Save as PDF” option. Drive PDF storage requires the Apps Script backend to support PDF creation and Drive saving.</p>
 </div>
 
 <div class="card activity" style="margin-top:14px">
@@ -1059,6 +1060,48 @@ document.getElementById('icePrint').addEventListener('click',()=>{
  w.document.write('<!doctype html><html><head><title>Civic Behaviour Ice-breaker Reflection</title><style>body{font:16px Arial;max-width:800px;margin:40px auto;color:#17243a}h1{color:#12356a}h2{color:#5b35a8}section{border:1px solid #ccc;border-radius:12px;padding:18px;margin:16px 0;white-space:pre-wrap}.meta{color:#555}@media print{button{display:none}}</style></head><body><h1>Civic Behaviour Workshop for School Principals</h1><h2>Ice-breaker: The School We Want to Become</h2><p class="meta">Participant: '+esc(name)+' · Role: '+esc(role)+' · Group: '+esc(document.getElementById('iceGroup').value)+'</p><section><h2>'+esc(card.querySelector('#iceCardTitle').textContent)+'</h2><p>'+esc(document.getElementById('iceScenario').textContent)+'</p><strong>Reflection question</strong><p>'+esc(document.getElementById('iceQuestion').textContent)+'</p></section><section><h2>My reflection / practical action</h2>'+esc(document.getElementById('iceReflection').value||'—')+'</section><section><h2>One insight I will take back to my school</h2>'+esc(document.getElementById('iceTakeaway').value||'—')+'</section><p>Reminder: model civic behaviour, preserve dignity and safety, and use existing school routines.</p><script>window.onload=()=>window.print()<\/script></body></html>');
  w.document.close();
  document.getElementById('iceStatus').textContent='Print dialog opened. Choose “Save as PDF” to save a PDF copy.';
+});
+document.getElementById('iceSubmit').addEventListener('click',async()=>{
+ const name=document.getElementById('iceName').value;
+ const role=document.getElementById('iceRole').value;
+ const group=document.getElementById('iceGroup').value;
+ const card=document.getElementById('iceCardDisplay');
+ const status=document.getElementById('iceStatus');
+ const button=document.getElementById('iceSubmit');
+ if(!name||!role||!group||!card.dataset.cardNumber){
+   status.textContent='Please select your name, role and group, then draw a card before submitting.';
+   return;
+ }
+ const payload={
+   action:'submitActivity',
+   activityId:'CIVIC_ICEBREAKER_SCHOOL_WE_WANT_TO_BECOME',
+   activityTitle:'Ice-breaker: The School We Want to Become',
+   participantName:name,
+   groupName:group,
+   submittedBy:name,
+   workshopRole:role,
+   responseData:{
+     cardNumber:Number(card.dataset.cardNumber),
+     civicValue:card.dataset.cardTheme||'',
+     scenario:document.getElementById('iceScenario').textContent,
+     reflectionQuestion:document.getElementById('iceQuestion').textContent,
+     reflection:document.getElementById('iceReflection').value.trim(),
+     schoolTakeaway:document.getElementById('iceTakeaway').value.trim(),
+     submittedAt:new Date().toISOString()
+   }
+ };
+ if(!payload.responseData.reflection&&!payload.responseData.schoolTakeaway){
+   status.textContent='Please enter a reflection or one practical school action before submitting.';
+   return;
+ }
+ button.disabled=true;
+ status.textContent='Sending response to the workshop register…';
+ try{
+   await apiPost(payload);
+   status.textContent='Submission request sent. Please verify the response appears in the Google Sheet; the browser cannot confirm a no-cors Apps Script write.';
+ }catch(err){
+   status.textContent='Submission could not be sent. Please try again. '+err.message;
+ }finally{button.disabled=false;}
 });
 document.getElementById('iceClear').addEventListener('click',()=>{
  document.getElementById('iceReflection').value='';
