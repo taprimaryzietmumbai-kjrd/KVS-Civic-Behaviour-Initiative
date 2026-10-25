@@ -425,6 +425,7 @@ main{max-width:none}
     </div>
     <div><label for="amGroup">Group name / number</label>
       <select id="amGroup"><option value="">Choose group…</option><option>1. Afroz Shah</option><option>2. Bezwada Wilson</option><option>3. M.C. Mehta</option><option>4. Arunachalam Muruganantham</option><option>5. Kunwar Bai</option></select>
+      <div id="amGroupDescription" class="notice" aria-live="polite" style="margin-top:10px"><strong>Civic enthusiast:</strong> Select a group to learn about the person and the civic contribution that inspires its name.</div>
     </div>
     <div><label for="amRole">Your workshop role</label>
       <select id="amRole">
@@ -774,6 +775,20 @@ document.getElementById('submitActivity1')?.addEventListener('click',async()=>{
   box.innerHTML=selected?'<strong>Case description:</strong> '+caseDescriptions[selected]:'<strong>Case description:</strong> Select a case study to read the situation your group will analyse.';
  }
  document.getElementById('amCase')?.addEventListener('change',updateCaseDescription);
+ const groupDescriptions={
+  '1. Afroz Shah': 'Afroz Shah is an environmental lawyer and civic activist known for leading a major community beach-cleaning effort at Versova in Mumbai. His example highlights citizen-led action, collective responsibility and sustained care for shared public spaces.',
+  '2. Bezwada Wilson': 'Bezwada Wilson is a social activist and co-founder of Safai Karmachari Andolan, known for campaigning to end manual scavenging and uphold the dignity and rights of sanitation workers. His example highlights human dignity, equality and respect for sanitation workers.',
+  '3. M.C. Mehta': 'M. C. Mehta is an environmental lawyer known for public-interest litigation that helped bring environmental protection issues before Indian courts. His example highlights civic responsibility, environmental rights and the role of law and institutions in protecting the public good.',
+  '4. Arunachalam Muruganantham': 'Arunachalam Muruganantham is a social innovator known for developing affordable sanitary-pad production methods and helping bring menstrual health and hygiene into public discussion. His example highlights practical problem-solving, inclusion, health awareness and challenging stigma with dignity.',
+  '5. Kunwar Bai': 'Kunwar Bai was a woman from Chhattisgarh widely recognised for selling her goats to help build a toilet at her home, becoming a symbol of community-led sanitation and behaviour change. Her example highlights personal initiative, dignity, sanitation and the power of one person’s action to inspire others.'
+ };
+ function updateGroupDescription(){
+  const selected=document.getElementById('amGroup')?.value||'';
+  const box=document.getElementById('amGroupDescription');
+  if(!box)return;
+  box.innerHTML=selected?'<strong>Civic enthusiast:</strong> '+groupDescriptions[selected]:'<strong>Civic enthusiast:</strong> Select a group to learn about the person and the civic contribution that inspires its name.';
+ }
+ document.getElementById('amGroup')?.addEventListener('change',updateGroupDescription);
  const key='kvsCivicAdultModellingDraftV1';
  const nameSelect=document.getElementById('amName');
  const source=document.getElementById('volFacilitator');
@@ -791,6 +806,7 @@ document.getElementById('submitActivity1')?.addEventListener('click',async()=>{
  ids.forEach(id=>document.getElementById(id)?.addEventListener('input',saveDraft));
  ids.forEach(id=>document.getElementById(id)?.addEventListener('change',saveDraft));
  updateCaseDescription();
+ updateGroupDescription();
  document.getElementById('amClear')?.addEventListener('click',()=>{
    if(!confirm('Clear the Adult Modelling case-study entries in this browser?'))return;
    ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
