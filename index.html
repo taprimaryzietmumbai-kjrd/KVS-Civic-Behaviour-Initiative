@@ -93,6 +93,7 @@ main{max-width:none}
 <button data-tab="originalPages">Original Handbook Pages</button>
 <button data-tab="responses">Participant Responses</button>
 <button data-tab="activities">Workshop Activities</button>
+      <button data-tab="gradewise">Gradewise Programme Designs</button>
 <button data-tab="quiz">Quick Check</button>
 <button data-tab="action">My KV Action Plan</button>
 </nav>
@@ -509,9 +510,18 @@ main{max-width:none}
 <h4>2 · Repeated practice (stage-specific)</h4><p class="small muted">Are students given regular, meaningful opportunities to practise expected behaviours?</p><label for="coPracticeEvidence">What did we notice?</label><textarea id="coPracticeEvidence" required></textarea><label for="coPracticeNext">How can practice become more consistent?</label><textarea id="coPracticeNext" required></textarea>
 <h4>3 · Adoption</h4><p class="small muted">Are there signs that students act independently, without step-by-step adult prompting?</p><label for="coAdoptionEvidence">What did we notice?</label><textarea id="coAdoptionEvidence" required></textarea><label for="coAdoptionNext">What would help students take the next step?</label><textarea id="coAdoptionNext" required></textarea>
 <h4>4 · Collective ownership</h4><p class="small muted">Do students see a practice or shared space as “our” responsibility?</p><label for="coOwnershipEvidence">What did we notice?</label><textarea id="coOwnershipEvidence" required></textarea><label for="coOwnershipNext">How can collective ownership be strengthened?</label><textarea id="coOwnershipNext" required></textarea>
-<h4>Peer feedback and individual reflection · Required</h4><label for="coPeerFeedback">Peer feedback: one strength and one constructive suggestion</label><textarea id="coPeerFeedback" required></textarea><label for="coReflection">Individual reflection: what did I notice differently after hearing others?</label><textarea id="coReflection" required></textarea><label for="coCommitment">Group takeaway / next supportive action</label><textarea id="coCommitment" required></textarea><div class="notice warning"><strong>Safeguards:</strong> Focus on evidence, not evaluation. Do not score or rank. Protect dignity and confidentiality. Refer safety concerns through existing school procedures.</div><div class="no-print" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="primary" id="coSavePdf">Prepare PDF / Print</button><button type="button" class="primary" id="coSubmit">Submit response to Google Sheet</button><button type="button" class="secondary" id="coClear">Clear this activity</button><span id="coStatus" class="small muted" role="status"></span></div><p class="small muted no-print">Draft is saved in this browser. PDF opens the print dialog; choose “Save as PDF”. Automatic Google Drive PDF storage requires a Drive-enabled Apps Script backend. Sheet submission requires the backend to support generic <code>submitActivity</code>.</p></div>
+<h4>Peer feedback and individual reflection · Required</h4><label for="coPeerFeedback">Peer feedback: one strength and one constructive suggestion</label><textarea id="coPeerFeedback" required></textarea><label for="coReflection">Individual reflection: what did I notice differently after hearing others?</label><textarea id="coReflection" required></textarea><label for="coCommitment">Group takeaway / next supportive action</label><textarea id="coCommitment" required></textarea><div class="notice warning"><strong>Safeguards:</strong> Focus on evidence, not evaluation. Do not score or rank. Protect dignity and confidentiality. Refer safety concerns through existing school procedures.</div><div class="no-print" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="primary" id="coSavePdf">Prepare PDF / Print</button><button type="button" class="primary" id="coSubmit">Submit response to Google Sheet</button><button type="button" class="secondary" id="coClear">Clear this activity</button><span id="coStatus" class="small muted" role="status"></span></div><p class="small muted no-print">Draft is saved in this browser. PDF opens the print dialog; choose “Save as PDF”. Automatic Google Drive PDF storage requires a Drive-enabled Apps Script backend. Sheet submission requiresbmit the plan data to the existing generic activity endpoint.</p>
+</div>
+</div>
+</section>
 
-<div class="card activity" id="gradePackActivity" style="margin-top:14px;border-left:5px solid #7c3aed">
+<section id="gradewise" class="panel">
+  <div class="card hero-card" style="margin-bottom:14px">
+    <div class="eyebrow">ZIET Mumbai · Civic Behaviour Workshop</div>
+    <h2>Gradewise Programme Designs</h2>
+    <p>Explore a grade pack and translate its programme design into safe, practical, curriculum-linked classroom practice. Use Part A and Part B together, and connect classroom learning, school practice, student participation, and reflection/home–community connection.</p>
+  </div>
+  <div class="card activity" id="gradePackActivity" style="margin-top:14px;border-left:5px solid #7c3aed">
   <div class="eyebrow">Workshop Group Activity · Grade Pack Exploration · 35–40 minutes</div>
   <h3>Reading a Grade Pack: From Programme Design to Classroom Practice</h3>
   <p><strong>Purpose:</strong> Use the Handbook’s Part A and Part B together to turn one grade’s pack into a practical, safe, curriculum-linked plan. Every group should keep the four connected routes visible: <strong>Classroom Learning, School Practice, Student Participation, and Reflection / Home–Community Connection.</strong></p>
@@ -554,7 +564,6 @@ main{max-width:none}
     <span id="gpStatus" class="small muted" role="status"></span>
   </div>
   <p class="small muted no-print">Your draft is saved in this browser while you work. The PDF button opens the print dialog; choose “Save as PDF”. Google Drive PDF archiving requires the Apps Script backend to create and store the PDF file; this form will submit the plan data to the existing generic activity endpoint.</p>
-</div>
 </div>
 </section>
 
