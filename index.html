@@ -348,7 +348,7 @@ main{max-width:none}
     <button type="button" class="secondary" id="iceClear">Clear / Draw Another Card</button>
     <span id="iceStatus" class="small muted" role="status" aria-live="polite"></span>
   </div>
-  <p class="small muted">Submit your response to send it to the workshop response register. PDF printing remains available through the browser’s “Save as PDF” option. Drive PDF storage requires the Apps Script backend to support PDF creation and Drive saving.</p>
+  <p class="small muted">Submitting saves the response to Google Sheets and automatically creates a PDF in the workshop Google Drive folder. After deployment, the app checks for the saved record and provides a PDF link. Use “Prepare PDF / Print” only if you also want a local copy.</p>
 </div>
 
 <div class="card activity" style="margin-top:14px">
@@ -1122,6 +1122,7 @@ document.getElementById('iceSubmit').addEventListener('click',async()=>{
    status.textContent='Please select your name, role and group, then draw a card before submitting.';
    return;
  }
+ const requestId='ice-'+Date.now()+'-'+Math.random().toString(36).slice(2,10);
  const payload={
    action:'submitActivity',
    activityId:'CIVIC_ICEBREAKER_SCHOOL_WE_WANT_TO_BECOME',
@@ -1131,6 +1132,7 @@ document.getElementById('iceSubmit').addEventListener('click',async()=>{
    submittedBy:name,
    workshopRole:role,
    responseData:{
+     clientRequestId:requestId,
      cardNumber:Number(card.dataset.cardNumber),
      civicValue:card.dataset.cardTheme||'',
      scenario:document.getElementById('iceScenario').textContent,
@@ -1148,7 +1150,27 @@ document.getElementById('iceSubmit').addEventListener('click',async()=>{
  status.textContent='Sending response to the workshop register…';
  try{
    await apiPost(payload);
-   status.textContent='Submission request sent. Please verify the response appears in the Google Sheet; the browser cannot confirm a no-cors Apps Script write.';
+   status.textContent='Submission sent. Confirming Google Sheets and Drive storage…';
+   let confirmed=null;
+   for(let attempt=0;attempt<8;attempt++){
+     await new Promise(resolve=>setTimeout(resolve,1500));
+     try{
+       const check=await apiGet({action:'submissionStatus',requestId});
+       if(check&&check.success&&check.found){confirmed=check;break;}
+     }catch(e){}
+   }
+   if(confirmed){
+     status.innerHTML='';
+     status.appendChild(document.createTextNode('✅ Response saved in Google Sheets.'));
+     if(confirmed.pdfUrl){
+       status.appendChild(document.createTextNode(' PDF saved in Google Drive: '));
+       const link=document.createElement('a');link.href=confirmed.pdfUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open PDF';status.appendChild(link);
+     }else{
+       status.appendChild(document.createTextNode(' Response found, but no PDF link was returned. Check the Apps Script deployment.'));
+     }
+   }else{
+     status.textContent='The request was sent, but saving is not yet confirmed. Check that the updated Apps Script has been saved and redeployed, then try again.';
+   }
  }catch(err){
    status.textContent='Submission could not be sent. Please try again. '+err.message;
  }finally{button.disabled=false;}
