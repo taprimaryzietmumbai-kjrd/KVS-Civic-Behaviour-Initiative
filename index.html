@@ -312,6 +312,40 @@ main{max-width:none}
 <h2>Facilitated workshop activities</h2>
 <p class="muted">Use these as a participant workbook. Record ideas for later use in your action plan.</p>
 
+<div class="card activity" id="icebreakerActivity" style="margin-top:14px;border:2px solid #6d3bd1;order:-1">
+  <div class="eyebrow">Ice-breaker · Group Formation · 20–25 minutes</div>
+  <h3>Ice-breaker: The School We Want to Become</h3>
+  <p>Each participant receives one randomly selected illustrated scenario card. Read the situation, reflect on the question, then find four colleagues whose cards represent the same civic value to form a group of five.</p>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+    <div>
+      <label for="iceName">Participant name</label>
+      <select id="iceName"><option value="">Choose participant…</option><option value="Shri Md. Shahnawaz Ahmad">Shri Md. Shahnawaz Ahmad</option><option value="Shri Vivek Dhar Dubey">Shri Vivek Dhar Dubey</option><option value="Shri RAJNEESH KUMAR TRIPATHI">Shri RAJNEESH KUMAR TRIPATHI</option><option value="Shri Ashok Kumar Gupta">Shri Ashok Kumar Gupta</option><option value="Shri RAJESH SRIVASTAVA">Shri RAJESH SRIVASTAVA</option><option value="Shri Sarjeet Singh">Shri Sarjeet Singh</option><option value="Shri Narsi Lal">Shri Narsi Lal</option><option value="Shri Devendra Kumar Deran">Shri Devendra Kumar Deran</option><option value="Shri Mahipal Singh">Shri Mahipal Singh</option><option value="Shri Manmath Kumar Sharma">Shri Manmath Kumar Sharma</option><option value="Shri.Sunil Kumar Sahu">Shri.Sunil Kumar Sahu</option><option value="Shri Girish Babu Kustwar">Shri Girish Babu Kustwar</option><option value="Shri Khushal Kumar Chandra">Shri Khushal Kumar Chandra</option><option value="Shri Shersingh Rajpoot">Shri Shersingh Rajpoot</option><option value="Shri SANJAY KANSAL">Shri SANJAY KANSAL</option><option value="Smt.  Madhulika Mitra Misra">Smt.  Madhulika Mitra Misra</option><option value="Shri FEROZ KHAN">Shri FEROZ KHAN</option><option value="SHRI UMAKANT JOSHI">SHRI UMAKANT JOSHI</option><option value="Shri SONA KUMAR">Shri SONA KUMAR</option><option value="Shri Jitendra Kumar Daroch">Shri Jitendra Kumar Daroch</option><option value="Smt. Sarita Sharma">Smt. Sarita Sharma</option><option value="Shri L R THAKAN">Shri L R THAKAN</option><option value="Shri RAJESH KUMAR">Shri RAJESH KUMAR</option><option value="Dr. (Smt.) Mamta Singh">Dr. (Smt.) Mamta Singh</option><option value="Shri Pradip B. Parkhi">Shri Pradip B. Parkhi</option></select>
+      <label for="iceRole">Workshop role</label>
+      <select id="iceRole"><option value="">Choose your role…</option><option>Facilitator</option><option>Collector / Scribe (Recorder)</option><option>Co-facilitator</option><option>Timekeeper</option><option>Participants</option><option>Decider</option><option>Domain Experts</option></select>
+      <label for="iceGroup">Group name / number (after grouping)</label>
+      <input id="iceGroup" placeholder="e.g., Responsibility Group">
+      <button type="button" class="primary" id="iceRandom" style="margin-top:12px">🎲 Get My Random Card</button>
+      <p class="small muted">The random draw selects one of all 25 cards individually. Cards 1–5: Responsibility; 6–10: Respect and Dignity; 11–15: Care for Shared Spaces; 16–20: Safety and Inclusion; 21–25: Collective Ownership.</p>
+    </div>
+    <div class="notice" id="iceCardDisplay" aria-live="polite" style="background:#f5f0ff;border:1px solid #d8c7ff">
+      <div class="eyebrow">Your Ice-breaker Card</div><h3 id="iceCardTitle">Ready to draw a card?</h3>
+      <p id="iceScenario">Select your name and role, then click “Get My Random Card”.</p>
+      <p><strong>Reflection question</strong></p><p id="iceQuestion">What would responsible, respectful and shared civic behaviour look like in this situation?</p>
+      <p><strong>Find your group:</strong> Locate four colleagues whose cards share your civic value.</p>
+    </div>
+  </div>
+  <label for="iceReflection">My reflection / practical action as a school principal</label>
+  <textarea id="iceReflection" placeholder="What does this situation teach us? What could adults model, and how could the practice become part of everyday school life?"></textarea>
+  <label for="iceTakeaway">One insight I will take back to my school</label>
+  <textarea id="iceTakeaway" placeholder="Record one realistic action that can be integrated into an existing school routine."></textarea>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
+    <button type="button" class="secondary" id="icePrint">Prepare PDF / Print</button>
+    <button type="button" class="secondary" id="iceClear">Clear / Draw Another Card</button>
+    <span id="iceStatus" class="small muted" role="status"></span>
+  </div>
+  <p class="small muted">To save as PDF, choose “Save as PDF” in the browser’s print dialog. This activity is placed at the top of Workshop Activities.</p>
+</div>
+
 <div class="card activity" style="margin-top:14px">
   <div class="eyebrow">Workshop team · Volunteer roles</div>
   <h3>Roles and responsibilities</h3>
@@ -974,6 +1008,65 @@ planFields.forEach(id=>document.getElementById(id).value='');
 document.getElementById('planStatus').textContent='Form cleared.';
 }
 }
+
+const iceCards=[
+{n:1,v:'Responsibility',s:'You notice a tap in the school corridor is leaking.',q:'What would responsible action look like in our school?'},
+{n:2,v:'Responsibility',s:'You see litter on the playground after recess.',q:'What message do we give when we pick it up ourselves?'},
+{n:3,v:'Responsibility',s:'A classroom fan is not working.',q:'How can we report the concern and follow up responsibly?'},
+{n:4,v:'Responsibility',s:'Some students do not return library books on time.',q:'How can we take responsibility for common resources?'},
+{n:5,v:'Responsibility',s:'A class leaves the room without switching off unused lights and fans.',q:'How can we build responsibility into daily routines?'},
+{n:6,v:'Respect and Dignity',s:'A support staff member is addressed disrespectfully by a student.',q:'How can adults model respect through words and actions?'},
+{n:7,v:'Respect and Dignity',s:'A student makes a mistake and is laughed at by peers.',q:'How can we respond while protecting the student’s dignity?'},
+{n:8,v:'Respect and Dignity',s:'A parent speaks to a teacher in a disrespectful manner.',q:'How can we maintain dignity for everyone involved?'},
+{n:9,v:'Respect and Dignity',s:'A new student joins the school and seems hesitant.',q:'What can we do to help the student feel valued and included?'},
+{n:10,v:'Respect and Dignity',s:'Students from different language or cultural backgrounds are represented in the school.',q:'How can we celebrate and respect our diversity?'},
+{n:11,v:'Care for Shared Spaces',s:'The classroom looks messy after an activity.',q:'How can we restore and maintain the space together?'},
+{n:12,v:'Care for Shared Spaces',s:'The school garden has withered plants.',q:'How can we care for and sustain our green spaces?'},
+{n:13,v:'Care for Shared Spaces',s:'Charts and displays on the walls are torn.',q:'How can we keep shared displays useful and in good condition?'},
+{n:14,v:'Care for Shared Spaces',s:'The school washroom is not clean.',q:'What routines and existing processes can help address the concern?'},
+{n:15,v:'Care for Shared Spaces',s:'Library books, sports equipment and lab resources are shared by all.',q:'How can we ensure these resources are used and cared for responsibly?'},
+{n:16,v:'Safety and Inclusion',s:'You notice a student sitting alone during recess.',q:'What could make our school more inclusive and welcoming?'},
+{n:17,v:'Safety and Inclusion',s:'Students are pushing on the staircase.',q:'How can we build safe and orderly movement in school?'},
+{n:18,v:'Safety and Inclusion',s:'A student with special needs requires support during activities.',q:'How can we ensure meaningful participation and appropriate support?'},
+{n:19,v:'Safety and Inclusion',s:'There is teasing or unkind behaviour based on appearance, background or ability.',q:'How can we create a safe and supportive school environment?'},
+{n:20,v:'Safety and Inclusion',s:'A child reports feeling unsafe on the way to or from school.',q:'How should adults listen, respond and follow up through appropriate school processes?'},
+{n:21,v:'Collective Ownership',s:'A class suggests a way to reduce plastic use in school.',q:'How can we encourage and support student initiatives?'},
+{n:22,v:'Collective Ownership',s:'Teachers, students and support staff work together for a cleanliness drive.',q:'How can we make shared responsibility a regular practice, not a one-time event?'},
+{n:23,v:'Collective Ownership',s:'The school community gives feedback about a common issue.',q:'How can we listen, act and communicate the outcome?'},
+{n:24,v:'Collective Ownership',s:'A routine is followed by students, teachers and the principal.',q:'What helps a routine become everyone’s shared practice?'},
+{n:25,v:'Collective Ownership',s:'Your school plans a long-term initiative to improve a shared space.',q:'How can we involve and sustain participation across the school community?'}
+];
+function drawIceCard(){
+ const c=iceCards[Math.floor(Math.random()*iceCards.length)];
+ document.getElementById('iceCardTitle').textContent='Card '+c.n+' · '+c.v;
+ document.getElementById('iceScenario').textContent=c.s;
+ document.getElementById('iceQuestion').textContent=c.q;
+ document.getElementById('iceStatus').textContent='Card '+c.n+' selected. Find four colleagues with the same civic value: '+c.v+'.';
+ document.getElementById('iceCardDisplay').dataset.cardNumber=c.n;
+ document.getElementById('iceCardDisplay').dataset.cardTheme=c.v;
+}
+document.getElementById('iceRandom').addEventListener('click',()=>{
+ if(!document.getElementById('iceName').value||!document.getElementById('iceRole').value){document.getElementById('iceStatus').textContent='Please select your name and workshop role first.';return;}
+ drawIceCard();
+});
+document.getElementById('icePrint').addEventListener('click',()=>{
+ const name=document.getElementById('iceName').value, role=document.getElementById('iceRole').value;
+ const card=document.getElementById('iceCardDisplay');
+ if(!name||!role||!card.dataset.cardNumber){document.getElementById('iceStatus').textContent='Select your name and role, then draw a card before preparing the PDF.';return;}
+ const w=window.open('','_blank');
+ if(!w){document.getElementById('iceStatus').textContent='Please allow the print window, then try again.';return;}
+ const esc=x=>String(x||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ w.document.write('<!doctype html><html><head><title>Civic Behaviour Ice-breaker Reflection</title><style>body{font:16px Arial;max-width:800px;margin:40px auto;color:#17243a}h1{color:#12356a}h2{color:#5b35a8}section{border:1px solid #ccc;border-radius:12px;padding:18px;margin:16px 0;white-space:pre-wrap}.meta{color:#555}@media print{button{display:none}}</style></head><body><h1>Civic Behaviour Workshop for School Principals</h1><h2>Ice-breaker: The School We Want to Become</h2><p class="meta">Participant: '+esc(name)+' · Role: '+esc(role)+' · Group: '+esc(document.getElementById('iceGroup').value)+'</p><section><h2>'+esc(card.querySelector('#iceCardTitle').textContent)+'</h2><p>'+esc(document.getElementById('iceScenario').textContent)+'</p><strong>Reflection question</strong><p>'+esc(document.getElementById('iceQuestion').textContent)+'</p></section><section><h2>My reflection / practical action</h2>'+esc(document.getElementById('iceReflection').value||'—')+'</section><section><h2>One insight I will take back to my school</h2>'+esc(document.getElementById('iceTakeaway').value||'—')+'</section><p>Reminder: model civic behaviour, preserve dignity and safety, and use existing school routines.</p><script>window.onload=()=>window.print()<\/script></body></html>');
+ w.document.close();
+ document.getElementById('iceStatus').textContent='Print dialog opened. Choose “Save as PDF” to save a PDF copy.';
+});
+document.getElementById('iceClear').addEventListener('click',()=>{
+ document.getElementById('iceReflection').value='';
+ document.getElementById('iceTakeaway').value='';
+ document.getElementById('iceGroup').value='';
+ drawIceCard();
+});
+
 </script>
 </body>
 </html>
