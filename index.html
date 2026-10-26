@@ -570,8 +570,8 @@ main{max-width:none}
     <textarea id="standCommitment" placeholder="A specific, realistic action…"></textarea>
   </div>
   <div class="grid" style="margin-top:12px">
-    <div><label for="standParticipant">Participant name (optional)</label><input id="standParticipant" placeholder="Your name"></div>
-    <div><label for="standRole">Role / school (optional)</label><input id="standRole" placeholder="e.g., Principal, KV …"></div>
+    <div><label for="standParticipant">Participant name (optional)</label><input id="standParticipant" list="standParticipantOptions" placeholder="Type or select your name" autocomplete="off"><datalist id="standParticipantOptions"></datalist></div>
+    <div><label for="standRole">Role / school (optional)</label><input id="standRole" list="standRoleOptions" placeholder="Select your role / school" autocomplete="off"><datalist id="standRoleOptions"></datalist></div>
   </div>
   <button class="primary" id="standPdfSubmit" type="button">Generate PDF &amp; Submit</button>
   <button class="secondary" id="standPdfDownload" type="button">Generate / Download PDF</button>
@@ -1625,6 +1625,23 @@ document.addEventListener('DOMContentLoaded',()=>{
  document.getElementById('standClear').addEventListener('click',clearStandReflection);
 });
 
+
+/* Automatic participant selection from the KV Principals attendance roster. */
+document.addEventListener('DOMContentLoaded',()=>{
+ const nameInput=document.getElementById('standParticipant');
+ const roleInput=document.getElementById('standRole');
+ const nameList=document.getElementById('standParticipantOptions');
+ const roleList=document.getElementById('standRoleOptions');
+ if(!nameInput||!roleInput||!nameList||!roleList||!Array.isArray(actionPlanAttendance))return;
+ const roster=actionPlanAttendance.map(row=>({name:String(row[0]||'').trim(),school:String(row[1]||'').trim(),region:String(row[2]||'').trim()})).filter(p=>p.name);
+ const addOptions=(list,values)=>{list.replaceChildren();[...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b)).forEach(value=>{const o=document.createElement('option');o.value=value;list.appendChild(o);});};
+ addOptions(nameList,roster.map(p=>p.name));
+ addOptions(roleList,roster.map(p=>'Principal, '+p.school));
+ const matchName=()=>roster.find(p=>p.name.toLocaleLowerCase()===nameInput.value.trim().toLocaleLowerCase());
+ nameInput.addEventListener('change',()=>{const p=matchName();if(p)roleInput.value='Principal, '+p.school;});
+ nameInput.addEventListener('input',()=>{const p=matchName();if(p)roleInput.value='Principal, '+p.school;});
+ roleInput.addEventListener('input',()=>{const v=roleInput.value.trim().toLocaleLowerCase();const p=roster.find(p=>('principal, '+p.school).toLocaleLowerCase()===v||p.school.toLocaleLowerCase()===v);if(p)nameInput.value=p.name;});
+});
 </script>
 </body>
 </html>
