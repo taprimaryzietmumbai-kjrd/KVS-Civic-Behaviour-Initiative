@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <title>KVS Civic Behaviour & Cleanliness Workshop | Participant Hub</title>
 <style>
 :root{--navy:#12356a;--blue:#1e5aa8;--green:#16845b;--gold:#f5b82e;--ink:#17243a;--muted:#607087;--paper:#f4f7fb;--line:#dce4ee}
@@ -572,10 +573,12 @@ main{max-width:none}
     <div><label for="standParticipant">Participant name (optional)</label><input id="standParticipant" placeholder="Your name"></div>
     <div><label for="standRole">Role / school (optional)</label><input id="standRole" placeholder="e.g., Principal, KV …"></div>
   </div>
-  <button class="primary" id="standSubmit" type="button">Submit reflection to workshop register</button>
-  <button class="secondary" id="standDownload" type="button">Download my reflection</button>
+  <button class="primary" id="standPdfSubmit" type="button">Generate PDF &amp; Submit</button>
+  <button class="secondary" id="standPdfDownload" type="button">Generate / Download PDF</button>
+  <button class="secondary" id="standSubmit" type="button">Submit reflection only</button>
+  <button class="secondary" id="standDownload" type="button">Download text copy</button>
   <button class="secondary" id="standClear" type="button">Clear responses</button>
-  <p id="standStatus" class="notice" role="status" aria-live="polite">Choose your responses and record your reflections. Submitting sends the response to the workshop register.</p>
+  <p id="standStatus" class="notice" role="status" aria-live="polite">Choose your responses and record your reflections. Generate a PDF for your records, or generate the PDF and include its file data with your workshop submission.</p>
 </div>
 
 <div class="card activity" style="margin-top:14px;border-left-color:#d97706">
@@ -1527,12 +1530,49 @@ function standPayload(){
   submittedAt:new Date().toISOString()
  };
 }
+function standPdfSafeText(value){
+ return String(value==null?'':value).replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/[\u2013\u2014]/g,'-').replace(/\u2026/g,'...').replace(/[^\x09\x0A\x0D\x20-\x7E]/g,' ');
+}
+function buildStandPdf(){
+ if(!window.jspdf||!window.jspdf.jsPDF) throw new Error('PDF generator could not load. Please refresh the app and try again.');
+ const d=standPayload(),doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+ const pageW=210,margin=17,maxW=pageW-margin*2;let y=18;
+ function ensure(h){if(y+h>280){doc.addPage();y=18;}}
+ function heading(text,size=12){ensure(10);doc.setFont('helvetica','bold');doc.setFontSize(size);doc.setTextColor(18,53,106);const lines=doc.splitTextToSize(standPdfSafeText(text),maxW);doc.text(lines,margin,y);y+=lines.length*(size*0.45)+3;}
+ function body(text,size=10){doc.setFont('helvetica','normal');doc.setFontSize(size);doc.setTextColor(35,45,60);const lines=doc.splitTextToSize(standPdfSafeText(text||'-'),maxW);ensure(lines.length*(size*0.43)+3);doc.text(lines,margin,y);y+=lines.length*(size*0.43)+3;}
+ doc.setFillColor(18,53,106);doc.rect(0,0,pageW,37,'F');
+ doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(17);doc.text('WHERE DO YOU STAND?',margin,16);
+ doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('KVS Civic Behaviour Initiative | Participant Reflection',margin,24);
+ doc.setFontSize(9);doc.text('Celebrate the Strengths. Challenge the Gaps. Co-create the Change.',margin,31);
+ y=46;heading('PARTICIPANT DETAILS');body('Name: '+(d.participant||'Not provided'));body('Role / School: '+(d.roleOrSchool||'Not provided'));body('Generated: '+new Date().toLocaleString());
+ heading('STATEMENT RESPONSES');
+ d.choices.forEach((x,i)=>{heading((i+1)+'. '+x.statement,10);body('Position: '+(x.position||'Not answered'));body('Reason: '+(x.reason||'Not provided'));y+=1;});
+ heading('GROUP CHALLENGE');
+ heading('Strengths to preserve',10);body(d.strengths||'Not provided');
+ heading('Concerns to address',10);body(d.concerns||'Not provided');
+ heading('Recommendations',10);body(d.recommendations||'Not provided');
+ heading('FINAL REFLECTION');
+ body('Selected position: '+(d.finalPosition||'Not selected'));
+ heading('I would be more confident about the success of the initiative if...',10);body(d.confidence||'Not provided');
+ heading('My practical commitment',10);body(d.commitment||'Not provided');
+ const total=doc.getNumberOfPages();
+ for(let p=1;p<=total;p++){doc.setPage(p);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100,112,130);doc.text('KVS Civic Behaviour Initiative - Where Do You Stand?',margin,290);doc.text('Page '+p+' of '+total,pageW-margin,290,{align:'right'});}
+ return {doc,data:d,fileName:'KVS_Where_Do_You_Stand_'+new Date().toISOString().slice(0,10)+'.pdf'};
+}
+function downloadStandPdf(){
+ const status=document.getElementById('standStatus');
+ try{const result=buildStandPdf();result.doc.save(result.fileName);status.textContent='PDF generated and downloaded: '+result.fileName;}
+ catch(err){status.textContent='PDF generation failed: '+(err&&err.message?err.message:String(err));}
+}
+function blobToBase64(blob){
+ return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]||'');reader.onerror=()=>reject(new Error('Could not prepare PDF for submission.'));reader.readAsDataURL(blob);});
+}
 function downloadStandReflection(){
  const d=standPayload();
- const lines=['KVS CIVIC BEHAVIOUR INITIATIVE — WHERE DO YOU STAND?','Participant: '+(d.participant||'Not provided'),'Role / school: '+(d.roleOrSchool||'Not provided'),'','STATEMENT RESPONSES'];
- d.choices.forEach((x,i)=>lines.push((i+1)+'. '+x.statement+'\nPosition: '+(x.position||'Not answered')+'\nReason: '+(x.reason||'—')));
- lines.push('','Strengths to preserve:\n'+(d.strengths||'—'),'','Concerns to address:\n'+(d.concerns||'—'),'','Recommendations:\n'+(d.recommendations||'—'),'','Final position: '+(d.finalPosition||'Not selected'),'','I would be more confident if:\n'+(d.confidence||'—'),'','My practical commitment:\n'+(d.commitment||'—'));
- const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='KVS_Where_Do_You_Stand_Reflection.txt';a.click();URL.revokeObjectURL(a.href);
+ const lines=['KVS CIVIC BEHAVIOUR INITIATIVE - WHERE DO YOU STAND?','Participant: '+(d.participant||'Not provided'),'Role / school: '+(d.roleOrSchool||'Not provided'),'','STATEMENT RESPONSES'];
+ d.choices.forEach((x,i)=>lines.push((i+1)+'. '+x.statement+'\nPosition: '+(x.position||'Not answered')+'\nReason: '+(x.reason||'-')));
+ lines.push('','Strengths to preserve:\n'+(d.strengths||'-'),'','Concerns to address:\n'+(d.concerns||'-'),'','Recommendations:\n'+(d.recommendations||'-'),'','Final position: '+(d.finalPosition||'Not selected'),'','I would be more confident if:\n'+(d.confidence||'-'),'','My practical commitment:\n'+(d.commitment||'-'));
+ const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='KVS_Where_Do_You_Stand_Reflection.txt';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 }
 function clearStandReflection(){
  if(!confirm('Clear all responses in “Where Do You Stand?”?'))return;
