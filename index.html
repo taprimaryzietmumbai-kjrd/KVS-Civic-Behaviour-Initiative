@@ -520,6 +520,64 @@ main{max-width:none}
 <textarea id="response" placeholder="Draft a brief, respectful follow-up"></textarea>
 </div>
 
+
+<div class="card activity" id="whereDoYouStand" style="margin-top:16px;border-left-color:#6d28d9">
+  <div class="eyebrow">Participant Reflection · 30–40 minutes</div>
+  <h3>Where Do You Stand?</h3>
+  <p><strong>Celebrate the Strengths. Challenge the Gaps. Co-create the Change.</strong></p>
+  <p>Examine the KVS Civic Behaviour Initiative from positive and critical perspectives. For each statement, choose <strong>Agree</strong>, <strong>Disagree</strong> or <strong>It depends</strong>. Explain your reasoning respectfully; the aim is reflection, not forced consensus.</p>
+  <div class="notice"><strong>Ground rule:</strong> Challenge ideas and practices, not individuals. These are discussion prompts, not verified findings from participant feedback.</div>
+  <div class="grid">
+    <div class="card" style="border-top:4px solid #16845b">
+      <h3>🟢 Round 1 · The Positives</h3>
+      <p class="muted small">What is worth preserving and strengthening?</p>
+      <div id="standPositive"></div>
+    </div>
+    <div class="card" style="border-top:4px solid #d97706">
+      <h3>🟠 Round 2 · The Concerns</h3>
+      <p class="muted small">What could prevent the initiative from succeeding?</p>
+      <div id="standCritical"></div>
+    </div>
+    <div class="card" style="border-top:4px solid #1d4ed8">
+      <h3>🔵 Round 3 · The Way Forward</h3>
+      <p class="muted small">What should be strengthened or changed?</p>
+      <div id="standFuture"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;background:#f8faff">
+    <h3>Group Challenge · Turn Criticism into Construction</h3>
+    <p>Record two strengths, two concerns and two practical recommendations. Focus on solutions that protect student dignity and safety and are realistic for schools.</p>
+    <label for="standStrengths">What should we preserve? (two strengths)</label>
+    <textarea id="standStrengths" placeholder="1. …&#10;2. …"></textarea>
+    <label for="standConcerns">What needs attention? (two concerns)</label>
+    <textarea id="standConcerns" placeholder="1. …&#10;2. …"></textarea>
+    <label for="standRecommendations">What do we recommend? (two practical improvements)</label>
+    <textarea id="standRecommendations" placeholder="1. …&#10;2. …"></textarea>
+  </div>
+  <div class="card" style="margin-top:14px;background:#fff9e9;border-color:#f0d58b">
+    <h3>Final Reflection · Where Do You Stand Now?</h3>
+    <p>Choose the position that best represents your view after the discussion.</p>
+    <div class="question">
+      <label><input type="radio" name="standFinalPosition" value="Strongly support"> Strongly support — the vision and approach offer significant educational value.</label>
+      <label><input type="radio" name="standFinalPosition" value="Support with improvements"> Support with improvements — implementation challenges need attention.</label>
+      <label><input type="radio" name="standFinalPosition" value="More evidence needed"> More evidence needed — effectiveness should be assessed through actual outcomes.</label>
+      <label><input type="radio" name="standFinalPosition" value="Substantial changes required"> Substantial changes required — the approach needs significant modification.</label>
+    </div>
+    <label for="standConfidence">I would be more confident about the success of the initiative if…</label>
+    <textarea id="standConfidence" placeholder="Complete this sentence…"></textarea>
+    <label for="standCommitment">One practical action I will take in my school</label>
+    <textarea id="standCommitment" placeholder="A specific, realistic action…"></textarea>
+  </div>
+  <div class="grid" style="margin-top:12px">
+    <div><label for="standParticipant">Participant name (optional)</label><input id="standParticipant" placeholder="Your name"></div>
+    <div><label for="standRole">Role / school (optional)</label><input id="standRole" placeholder="e.g., Principal, KV …"></div>
+  </div>
+  <button class="primary" id="standSubmit" type="button">Submit reflection to workshop register</button>
+  <button class="secondary" id="standDownload" type="button">Download my reflection</button>
+  <button class="secondary" id="standClear" type="button">Clear responses</button>
+  <p id="standStatus" class="notice" role="status" aria-live="polite">Choose your responses and record your reflections. Submitting sends the response to the workshop register.</p>
+</div>
+
 <div class="card activity" style="margin-top:14px;border-left-color:#d97706">
   <div class="eyebrow">Workshop Activity · Adult Modelling · 40–50 minutes</div>
   <h3>Case Studies: Children Learn What Adults Practise</h3>
@@ -1420,6 +1478,93 @@ document.getElementById('iceClear').addEventListener('click',()=>{
  document.getElementById('iceTakeaway').value='';
  document.getElementById('iceGroup').value='';
  drawIceCard();
+});
+
+
+const standStatements = [
+ {round:'positive',text:'1. The initiative can help students translate civic values into responsible everyday behaviour.'},
+ {round:'positive',text:'2. Children develop civic responsibility through regular practice, not instructions alone.'},
+ {round:'positive',text:'3. The initiative can help school leaders and teachers build a culture of care, respect and cooperation.'},
+ {round:'positive',text:'4. Students should help identify civic problems and propose solutions, rather than simply follow instructions.'},
+ {round:'positive',text:'5. Responsible habits developed at school can potentially influence families and communities.'},
+ {round:'critical',text:'6. The initiative may add to teachers’ workload if it is not integrated into existing routines.'},
+ {round:'critical',text:'7. Campaigns, pledges and photographs do not necessarily lead to lasting behavioural change.'},
+ {round:'critical',text:'8. Schools cannot convincingly teach civic responsibility if adults do not model it consistently.'},
+ {round:'critical',text:'9. It is unfair to expect students to maintain civic standards when facilities and institutional support are inadequate.'},
+ {round:'critical',text:'10. Excessive reporting may shift attention from actual improvement to completing checklists.'},
+ {round:'future',text:'11. Civic behaviour should be part of everyday school life, not merely a standalone campaign.'},
+ {round:'future',text:'12. Schools should adapt activities to local needs rather than focus only on completing a prescribed plan.'},
+ {round:'future',text:'13. Student, teacher and support-staff feedback should influence implementation.'},
+ {round:'future',text:'14. A 30–60–90-day follow-up can help check whether improvements are sustained.'},
+ {round:'future',text:'15. Success should be assessed through meaningful behavioural change, not the number of activities conducted.'}
+];
+function renderStandStatements(){
+ const targets={positive:document.getElementById('standPositive'),critical:document.getElementById('standCritical'),future:document.getElementById('standFuture')};
+ standStatements.forEach((item,i)=>{
+   const box=document.createElement('div');box.className='question';box.style.margin='10px 0';
+   const p=document.createElement('p');p.textContent=item.text;box.appendChild(p);
+   [['Agree','Agree'],['Disagree','Disagree'],['It depends','It depends']].forEach(([label,value])=>{
+     const lab=document.createElement('label');const radio=document.createElement('input');
+     radio.type='radio';radio.name='standChoice'+(i+1);radio.value=value;radio.style.width='auto';
+     lab.appendChild(radio);lab.appendChild(document.createTextNode(' '+label));box.appendChild(lab);
+   });
+   const note=document.createElement('textarea');note.id='standReason'+(i+1);note.placeholder='Optional: Why do you take this position?';note.style.minHeight='58px';box.appendChild(note);
+   targets[item.round].appendChild(box);
+ });
+}
+function standPayload(){
+ const choices=standStatements.map((item,i)=>({statement:item.text,position:(document.querySelector('input[name="standChoice'+(i+1)+'"]:checked')||{}).value||'',reason:document.getElementById('standReason'+(i+1)).value.trim()}));
+ return {
+  participant:document.getElementById('standParticipant').value.trim(),
+  roleOrSchool:document.getElementById('standRole').value.trim(),
+  choices,
+  strengths:document.getElementById('standStrengths').value.trim(),
+  concerns:document.getElementById('standConcerns').value.trim(),
+  recommendations:document.getElementById('standRecommendations').value.trim(),
+  finalPosition:(document.querySelector('input[name="standFinalPosition"]:checked')||{}).value||'',
+  confidence:document.getElementById('standConfidence').value.trim(),
+  commitment:document.getElementById('standCommitment').value.trim(),
+  submittedAt:new Date().toISOString()
+ };
+}
+function downloadStandReflection(){
+ const d=standPayload();
+ const lines=['KVS CIVIC BEHAVIOUR INITIATIVE — WHERE DO YOU STAND?','Participant: '+(d.participant||'Not provided'),'Role / school: '+(d.roleOrSchool||'Not provided'),'','STATEMENT RESPONSES'];
+ d.choices.forEach((x,i)=>lines.push((i+1)+'. '+x.statement+'\nPosition: '+(x.position||'Not answered')+'\nReason: '+(x.reason||'—')));
+ lines.push('','Strengths to preserve:\n'+(d.strengths||'—'),'','Concerns to address:\n'+(d.concerns||'—'),'','Recommendations:\n'+(d.recommendations||'—'),'','Final position: '+(d.finalPosition||'Not selected'),'','I would be more confident if:\n'+(d.confidence||'—'),'','My practical commitment:\n'+(d.commitment||'—'));
+ const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='KVS_Where_Do_You_Stand_Reflection.txt';a.click();URL.revokeObjectURL(a.href);
+}
+function clearStandReflection(){
+ if(!confirm('Clear all responses in “Where Do You Stand?”?'))return;
+ document.querySelectorAll('#whereDoYouStand input[type="radio"]').forEach(x=>x.checked=false);
+ document.querySelectorAll('#whereDoYouStand textarea,#whereDoYouStand input[type="text"]').forEach(x=>x.value='');
+ document.getElementById('standStatus').textContent='Responses cleared.';
+}
+async function submitStandReflection(){
+ const status=document.getElementById('standStatus'),button=document.getElementById('standSubmit'),d=standPayload();
+ if(!d.choices.some(x=>x.position)||(!d.strengths&&!d.concerns&&!d.recommendations&&!d.confidence&&!d.commitment)){
+  status.textContent='Please select at least one position and add at least one reflection or recommendation before submitting.';return;
+ }
+ const requestId='stand-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
+ button.disabled=true;status.textContent='Submitting your reflection to the workshop register…';
+ try{
+  await apiPost({action:'submitActivity',activityId:'WHERE_DO_YOU_STAND_CIVIC_BEHAVIOUR',activityTitle:'Where Do You Stand? — Civic Behaviour Initiative',submittedBy:d.participant||'Participant not named',workshopRole:d.roleOrSchool||'Workshop participant',groupName:'Where Do You Stand',responseData:{clientRequestId:requestId,...d}});
+  status.textContent='Response sent. Checking whether it has been recorded…';
+  let confirmed=null;
+  for(let attempt=0;attempt<8;attempt++){
+   await new Promise(resolve=>setTimeout(resolve,1500));
+   try{const check=await apiGet({action:'submissionStatus',requestId});if(check&&check.success&&check.found){confirmed=check;break;}}catch(e){}
+  }
+  if(confirmed){status.textContent='✅ Your reflection is recorded in the workshop register.';}
+  else{status.textContent='The response was sent, but saving is not yet confirmed. Please check the workshop register before submitting again. You can also download your reflection as a local copy.';}
+ }catch(err){status.textContent='Could not confirm submission: '+(err&&err.message?err.message:String(err))+'. You can download your reflection and try again later.';}
+ finally{button.disabled=false;}
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ renderStandStatements();
+ document.getElementById('standSubmit').addEventListener('click',submitStandReflection);
+ document.getElementById('standDownload').addEventListener('click',downloadStandReflection);
+ document.getElementById('standClear').addEventListener('click',clearStandReflection);
 });
 
 </script>
