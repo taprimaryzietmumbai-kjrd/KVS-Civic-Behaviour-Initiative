@@ -1580,29 +1580,47 @@ function clearStandReflection(){
  document.querySelectorAll('#whereDoYouStand textarea,#whereDoYouStand input[type="text"]').forEach(x=>x.value='');
  document.getElementById('standStatus').textContent='Responses cleared.';
 }
-async function submitStandReflection(){
- const status=document.getElementById('standStatus'),button=document.getElementById('standSubmit'),d=standPayload();
+async function submitStandReflection(includePdf=false){
+ const status=document.getElementById('standStatus'),button=document.getElementById(includePdf?'standPdfSubmit':'standSubmit'),d=standPayload();
  if(!d.choices.some(x=>x.position)||(!d.strengths&&!d.concerns&&!d.recommendations&&!d.confidence&&!d.commitment)){
   status.textContent='Please select at least one position and add at least one reflection or recommendation before submitting.';return;
  }
  const requestId='stand-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
- button.disabled=true;status.textContent='Submitting your reflection to the workshop register…';
+ button.disabled=true;
  try{
-  await apiPost({action:'submitActivity',activityId:'WHERE_DO_YOU_STAND_CIVIC_BEHAVIOUR',activityTitle:'Where Do You Stand? — Civic Behaviour Initiative',submittedBy:d.participant||'Participant not named',workshopRole:d.roleOrSchool||'Workshop participant',groupName:'Where Do You Stand',responseData:{clientRequestId:requestId,...d}});
-  status.textContent='Response sent. Checking whether it has been recorded…';
+  let responseData={clientRequestId:requestId,...d};
+  if(includePdf){
+   status.textContent='Generating your PDF…';
+   const result=buildStandPdf();
+   const blob=result.doc.output('blob');
+   const pdfBase64=await blobToBase64(blob);
+   responseData={...responseData,pdfFileName:result.fileName,pdfMimeType:'application/pdf',pdfBase64:pdfBase64,pdfIncluded:true};
+   const downloadUrl=URL.createObjectURL(blob),a=document.createElement('a');a.href=downloadUrl;a.download=result.fileName;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(downloadUrl),1500);
+   status.textContent='PDF generated. Submitting your reflection and PDF data to the workshop register…';
+  }else{
+   status.textContent='Submitting your reflection to the workshop register…';
+  }
+  await apiPost({action:'submitActivity',activityId:'WHERE_DO_YOU_STAND_CIVIC_BEHAVIOUR',activityTitle:'Where Do You Stand? — Civic Behaviour Initiative',submittedBy:d.participant||'Participant not named',workshopRole:d.roleOrSchool||'Workshop participant',groupName:'Where Do You Stand',responseData});
+  status.textContent=includePdf?'Submission sent with PDF data. Checking whether it has been recorded…':'Response sent. Checking whether it has been recorded…';
   let confirmed=null;
   for(let attempt=0;attempt<8;attempt++){
    await new Promise(resolve=>setTimeout(resolve,1500));
    try{const check=await apiGet({action:'submissionStatus',requestId});if(check&&check.success&&check.found){confirmed=check;break;}}catch(e){}
   }
-  if(confirmed){status.textContent='✅ Your reflection is recorded in the workshop register.';}
-  else{status.textContent='The response was sent, but saving is not yet confirmed. Please check the workshop register before submitting again. You can also download your reflection as a local copy.';}
- }catch(err){status.textContent='Could not confirm submission: '+(err&&err.message?err.message:String(err))+'. You can download your reflection and try again later.';}
- finally{button.disabled=false;}
+  if(confirmed){
+   status.textContent=includePdf?'Reflection recorded. The PDF was included in the submission data and downloaded to your device.':'Your reflection is recorded in the workshop register.';
+  }else{
+   status.textContent=includePdf?'The reflection and PDF data were sent, but the register has not confirmed saving. The PDF is downloaded to your device; please check the workshop register before resubmitting.':'The response was sent, but saving is not yet confirmed. Please check the workshop register before submitting again. You can download a local copy.';
+  }
+ }catch(err){
+  status.textContent='Could not complete submission: '+(err&&err.message?err.message:String(err))+'. Please try again; use Generate / Download PDF to keep a local copy.';
+ }finally{button.disabled=false;}
 }
 document.addEventListener('DOMContentLoaded',()=>{
  renderStandStatements();
- document.getElementById('standSubmit').addEventListener('click',submitStandReflection);
+ document.getElementById('standSubmit').addEventListener('click',()=>submitStandReflection(false));
+ document.getElementById('standPdfSubmit').addEventListener('click',()=>submitStandReflection(true));
+ document.getElementById('standPdfDownload').addEventListener('click',downloadStandPdf);
  document.getElementById('standDownload').addEventListener('click',downloadStandReflection);
  document.getElementById('standClear').addEventListener('click',clearStandReflection);
 });
