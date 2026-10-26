@@ -705,8 +705,8 @@ main{max-width:none}
 <p class="muted">Choose one priority behaviour. Keep the plan small, safe, observable and integrated into existing school practice.</p>
 <div class="card">
 <div class="grid">
-<div><label for="participant">Participant name</label><input id="participant" placeholder="Your name"></div>
-<div><label for="kv">Kendriya Vidyalaya</label><input id="kv" placeholder="School name"></div>
+<div><label for="participant">Participant name (from attendance list)</label><select id="participant"><option value="">Select participant</option></select></div>
+<div><label for="kv">Kendriya Vidyalaya (from attendance list)</label><select id="kv"><option value="">Select school</option></select></div>
 <div><label for="region">KVS Region</label><select id="region"><option value="">Select region</option><option>Mumbai</option><option>Ahmedabad</option><option>Jaipur</option><option>Patna</option><option>Raipur</option><option>Other</option></select></div>
 </div>
 <label for="priority">Priority behaviour (observable)</label>
@@ -1103,6 +1103,32 @@ document.getElementById('quizResult').classList.add('hidden');
 }
 
 const planFields=['participant','kv','region','priority','curriculumLink','model','routinePlan','studentVoice','feedbackPlan','support','startDate','reviewDate','success'];
+
+// Attendance roster supplied for the KV Principals' workshop (25 entries).
+const actionPlanAttendance = [["Shri Md. Shahnawaz Ahmad","Kendriya Vidyalaya Ara; 2062 (Patna Region)","Patna"],["Shri Vivek Dhar Dubey","Kendriya Vidyalaya Bettiah; Code: 1815 (Patna Region)","Patna"],["Shri RAJNEESH KUMAR TRIPATHI","Kendriya Vidyalaya Garhara; Code: 1814 (Patna Region)","Patna"],["Shri Ashok Kumar Gupta","Kendriya Vidyalaya No.1 Gaya; Code: 1821 (Patna Region)","Patna"],["Shri RAJESH SRIVASTAVA","Kendriya Vidyalaya No.2 Gaya; Code: 1822 (Patna Region)","Patna"],["Shri Sarjeet Singh","PM SHRI Kendriya Vidyalaya BSF RAISINGHNAGAR - 2174 (Jaipur Region)","Jaipur"],["Shri Narsi Lal","PM SHRI Kendriya Vidyalaya SIKAR ; Code 1636 (Jaipur Region)","Jaipur"],["Shri Devendra Kumar Deran","PM SHRI Kendriya Vidyalaya No.2 Ajmer, 1593 (Jaipur Region)","Jaipur"],["Shri Mahipal Singh","PM SHRI Kendriya Vidyalaya NO. 4, JAIPUR & 1615 (Jaipur Region)","Jaipur"],["Shri Manmath Kumar Sharma","PM SHRI Kendriya Vidyalaya DHOLPUR 2353 (Jaipur Region)","Jaipur"],["Shri.Sunil Kumar Sahu","Kendriya Vidyalaya No. 2 Korba (NTPC)-1573 (Raipur Region)","Raipur"],["Shri Girish Babu Kustwar","PM SHRI KENDRIYA VIDYALAYA DHAMTARI, SCHOOL CODE 2080 (Raipur Region)","Raipur"],["Shri Khushal Kumar Chandra","PM SHRI KENDRIYA VIDYALAYA JANJGIR, 2288 (Raipur Region)","Raipur"],["Shri Shersingh Rajpoot","KENDRIYA VIDYALAYA BACHELI (1543) (Raipur Region)","Raipur"],["Shri SANJAY KANSAL","PM SHRI K V MAHASAMUND (Raipur Region)","Raipur"],["Smt.  Madhulika Mitra Misra","PM SHRI Kendriya Vidyalaya INS HAMLA (CODE 1215) (Mumbai Region)","Mumbai"],["Shri FEROZ KHAN","PM SHRI Kendriya Vidyalaya AJNI NAGPUR (CODE 1124) (Mumbai Region)","Mumbai"],["SHRI UMAKANT JOSHI","PM SHRI Kendriya Vidyalaya CR SOLAPUR (CODE 1233) (Mumbai Region)","Mumbai"],["Shri SONA KUMAR","PM SHRI Kendriya Vidyalaya NMU JALGAON ( CODE 1204) (Mumbai Region)","Mumbai"],["Shri Jitendra Kumar Daroch","KENDRIYA VIDYALAYA No.3 AFS BaRegionda & 1009 (Ahmedabad Region)","Ahmedabad"],["Smt. Sarita Sharma","Kendriya Vidyalaya NO.1 AFS BHUJ & 1012 (Ahmedabad Region)","Ahmedabad"],["Shri L R THAKAN","KENDRIYA VIDYALAYA NO.1 Baroda (Ahmedabad Region)","Ahmedabad"],["Shri RAJESH KUMAR","Kendriya Vidyalaya ONGC SURAT & 1040 (Ahmedabad Region)","Ahmedabad"],["Dr. (Smt.) Mamta Singh","Kendriya Vidyalaya CRPF GANDHINAGAR & 1021 (Ahmedabad Region)","Ahmedabad"],["Shri Pradip B. Parkhi","PM SHRI Kendriya Vidyalaya DHULE (CODE 2101)","Mumbai"]];
+function populateAttendanceSelectors(){
+  const participant=document.getElementById('participant');
+  const school=document.getElementById('kv');
+  if(!participant || !school) return;
+  const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  actionPlanAttendance.forEach((row,index)=>{
+    participant.add(new Option(row[0],String(index)));
+    school.add(new Option(row[1],String(index)));
+  });
+  participant.addEventListener('change',()=>{
+    if(participant.value===''){school.value='';document.getElementById('region').value='';return;}
+    school.value=participant.value;
+    const region=actionPlanAttendance[Number(participant.value)][2];
+    document.getElementById('region').value=region;
+  });
+  school.addEventListener('change',()=>{
+    if(school.value===''){participant.value='';return;}
+    participant.value=school.value;
+    document.getElementById('region').value=actionPlanAttendance[Number(school.value)][2];
+  });
+}
+document.addEventListener('DOMContentLoaded',populateAttendanceSelectors);
+
 
 function planText(){
 let out='KVS CIVIC BEHAVIOUR & CLEANLINESS INITIATIVE\n30-DAY KV ACTION PLAN\n\n';
