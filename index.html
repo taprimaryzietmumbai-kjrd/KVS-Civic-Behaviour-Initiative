@@ -726,7 +726,8 @@ main{max-width:none}
 <label for="success">Evidence of progress (not a ranking)</label>
 <textarea id="success" placeholder="What change in routine or behaviour would you expect to notice?"></textarea>
 <div class="no-print">
-<button class="primary" onclick="downloadPlan()">Download my action plan (.txt)</button>
+<button class="primary" id="submitPlanButton" onclick="submitActionPlan()">Submit action plan to Google Drive (PDF)</button>
+<button class="secondary" onclick="downloadPlan()">Download my action plan (.txt)</button>
 <button class="secondary" onclick="window.print()">Print / Save as PDF</button>
 <button class="secondary" onclick="clearPlan()">Clear form</button>
 </div>
@@ -738,7 +739,7 @@ main{max-width:none}
 
 <footer>
 KVS Civic Behaviour and Cleanliness Initiative · Participant learning tool · ZIET Mumbai<br>
-<span class="small">Standalone demo: entries remain in this browser session and are not submitted to a server. Download or print your work before closing.</span>
+<span class="small">Action plans can be submitted to the workshop Google Sheet and saved as separate PDFs in Google Drive. Wait for the on-screen confirmation before closing.</span>
 </footer>
 
 <script>
@@ -1126,6 +1127,69 @@ if(confirm('Clear all action-plan fields?')){
 planFields.forEach(id=>document.getElementById(id).value='');
 document.getElementById('planStatus').textContent='Form cleared.';
 }
+}
+
+async function submitActionPlan(){
+  const status=document.getElementById('planStatus');
+  const button=document.getElementById('submitPlanButton');
+  const values={};
+  for(const id of planFields){
+    const el=document.getElementById(id);
+    values[id]=el ? String(el.value||'').trim() : '';
+  }
+  if(!values.participant || !values.kv){
+    status.textContent='Please enter your participant name and Kendriya Vidyalaya before submitting.';
+    (!values.participant?document.getElementById('participant'):document.getElementById('kv')).focus();
+    return;
+  }
+  if(!values.priority){
+    status.textContent='Please describe the one priority behaviour for your 30-day plan.';
+    document.getElementById('priority').focus();
+    return;
+  }
+  if(values.startDate && values.reviewDate && values.reviewDate < values.startDate){
+    status.textContent='Review date cannot be earlier than the start date.';
+    document.getElementById('reviewDate').focus();
+    return;
+  }
+  const clientRequestId='KVPLAN-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
+  const region=values.region || 'Not specified';
+  const payload={
+    action:'submitActivity',
+    activityId:'MY_KV_30_DAY_ACTION_PLAN',
+    activityTitle:'My KV: 30-day civic behaviour action plan',
+    groupName:values.kv+' ('+region+' Region)',
+    submittedBy:values.participant,
+    workshopRole:'Kendriya Vidyalaya action-plan participant',
+    responseData:{clientRequestId:clientRequestId,school:values.kv,region:region,plan:values}
+  };
+  button.disabled=true;
+  button.textContent='Submitting…';
+  status.textContent='Submitting your action plan. Please keep this page open while Google Drive prepares the PDF…';
+  try{
+    await apiPost(payload);
+    // POST is intentionally opaque because the Apps Script web app is cross-origin.
+    // Confirm the saved row and PDF through the backend's JSONP status endpoint.
+    const deadline=Date.now()+90000;
+    while(Date.now()<deadline){
+      await new Promise(resolve=>setTimeout(resolve,2500));
+      const result=await apiGet({action:'submissionStatus',requestId:clientRequestId});
+      if(result && result.success && result.found){
+        if(result.pdfUrl){
+          status.innerHTML='Submission successful. Your action plan has been saved as a separate PDF in Google Drive. <a href="'+String(result.pdfUrl).replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'" target="_blank" rel="noopener">Open your submitted PDF</a>';
+        }else{
+          status.textContent='Your action plan was recorded, but the PDF link is not available yet. Please contact the workshop administrator and quote request ID '+clientRequestId+'.';
+        }
+        return;
+      }
+    }
+    status.textContent='No confirmation received yet. Your submission may still be processing. Please check the Activity Responses sheet before submitting again. Reference: '+clientRequestId;
+  }catch(err){
+    status.textContent='Could not confirm the submission: '+(err && err.message ? err.message : String(err))+'. Please check the Activity Responses sheet before trying again.';
+  }finally{
+    button.disabled=false;
+    button.textContent='Submit action plan to Google Drive (PDF)';
+  }
 }
 
 
