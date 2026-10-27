@@ -649,6 +649,87 @@ main{max-width:none}
 <h4>Peer feedback and individual reflection · Required</h4><label for="coPeerFeedback">Peer feedback: one strength and one constructive suggestion</label><textarea id="coPeerFeedback" required></textarea><label for="coReflection">Individual reflection: what did I notice differently after hearing others?</label><textarea id="coReflection" required></textarea><label for="coCommitment">Group takeaway / next supportive action</label><textarea id="coCommitment" required></textarea><div class="notice warning"><strong>Safeguards:</strong> Focus on evidence, not evaluation. Do not score or rank. Protect dignity and confidentiality. Refer safety concerns through existing school procedures.</div><div class="no-print" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="primary" id="coSavePdf">Prepare PDF / Print</button><button type="button" class="primary" id="coSubmit">Submit response to Google Sheet</button><button type="button" class="secondary" id="coClear">Clear this activity</button><span id="coStatus" class="small muted" role="status"></span></div><p class="small muted no-print">Draft is saved in this browser. PDF opens the print dialog; choose “Save as PDF”. Automatic Google Drive PDF storage requires a Drive-enabled Apps Script backend. Sheet submission requiresbmit the plan data to the existing generic activity endpoint.</p>
 </div>
 </div>
+
+<div class="card activity" id="civicJourneyActivity" style="margin-top:16px;border:2px solid #0f766e">
+  <div class="eyebrow">Featured Workshop Activity · Self-reflection to sustained action · 35–45 minutes</div>
+  <h3>Journey from Observer to Transformational Leader</h3>
+  <p><strong>Central reflection:</strong> “Are you merely concerned about civic behaviour, enthusiastic about improving it, actively working to change it, or creating a culture in which responsible behaviour becomes natural?”</p>
+  <div class="notice"><strong>Be the change that you wish to see in the world.</strong><br>— Mahatma Gandhi (commonly attributed)</div>
+  <h4 style="color:var(--navy)">Part A · Explore the civic engagement continuum</h4>
+  <p>Read all the stages. They are prompts for reflection, not labels or a rigid ranking. People may occupy different stages in different situations.</p>
+  <div class="role-grid" id="civicJourneyStages">
+    <div><strong>1. Observer</strong><p>Notices what is happening but remains uninvolved.</p></div>
+    <div><strong>2. Aware Citizen</strong><p>Understands the issue and its consequences.</p></div>
+    <div><strong>3. Supporter</strong><p>Believes in the cause and supports it.</p></div>
+    <div><strong>4. Enthusiast</strong><p>Shows passion, interest and willingness to participate.</p></div>
+    <div><strong>5. Participant</strong><p>Actively takes part when opportunities arise.</p></div>
+    <div><strong>6. Volunteer</strong><p>Freely contributes time and effort to the cause.</p></div>
+    <div><strong>7. Initiator</strong><p>Takes the first step and starts an activity.</p></div>
+    <div><strong>8. Advocate</strong><p>Persuades others and promotes the cause.</p></div>
+    <div><strong>9. Activist</strong><p>Consistently works to challenge problems and bring change.</p></div>
+    <div><strong>10. Change Agent</strong><p>Converts ideas into sustained improvements in behaviour and practice.</p></div>
+    <div><strong>11. Role Model</strong><p><em>“I practise what I promote.”</em></p></div>
+    <div><strong>12. Culture Champion</strong><p><em>“I help make good behaviour a shared habit.”</em></p></div>
+    <div><strong>13. Transformational Leader</strong><p><em>“I create conditions for lasting change.”</em></p></div>
+  </div>
+  <div class="grid" style="margin-top:14px">
+    <div><label for="cjParticipant">Participant name (optional)</label><input id="cjParticipant" placeholder="Enter your name"></div>
+    <div><label for="cjRole">Role / KV (optional)</label><input id="cjRole" placeholder="e.g. Principal, KV …"></div>
+  </div>
+  <label for="cjCurrent">Where do I honestly stand today?</label>
+  <select id="cjCurrent">
+    <option value="">Choose the stage that best reflects your current practice…</option>
+    <option>Observer</option><option>Aware Citizen</option><option>Supporter</option><option>Enthusiast</option><option>Participant</option><option>Volunteer</option><option>Initiator</option><option>Advocate</option><option>Activist</option><option>Change Agent</option><option>Role Model</option><option>Culture Champion</option><option>Transformational Leader</option>
+  </select>
+  <label for="cjNext">What is one stage or practice I want to move towards?</label>
+  <select id="cjNext">
+    <option value="">Choose an aspirational stage…</option>
+    <option>Observer</option><option>Aware Citizen</option><option>Supporter</option><option>Enthusiast</option><option>Participant</option><option>Volunteer</option><option>Initiator</option><option>Advocate</option><option>Activist</option><option>Change Agent</option><option>Role Model</option><option>Culture Champion</option><option>Transformational Leader</option>
+  </select>
+  <h4 style="color:var(--navy)">Part B · Learn from Ahmedabad: achievement, effort and shared responsibility</h4>
+  <p>Ahmedabad's recognition in Swachh Survekshan 2024–25 as India's cleanest city in its population category is a moment of civic pride. Reflect on the contributions of civic authorities, sanitation workers and citizens. Appreciation should go hand in hand with continued responsibility: how can an achievement become a lasting culture of civic sense?</p>
+  <div class="notice"><strong>Discuss:</strong> A city's cleanliness and civic discipline cannot rest on sanitation workers or the administration alone. They require facilities, fair systems, responsible public services and the conscious participation of citizens.</div>
+  <label for="cjStrengths">What efforts, contributions or positive civic practices should we appreciate and build upon?</label>
+  <textarea id="cjStrengths" placeholder="Consider civic authorities, sanitation workers, residents, institutions, schools and everyday citizen actions…"></textarea>
+  <label for="cjGaps">What gaps or barriers can prevent lasting civic behaviour?</label>
+  <textarea id="cjGaps" placeholder="Consider infrastructure, access to bins, public facilities, adult role-modelling, habits, accountability and follow-up. Avoid blaming individuals."></textarea>
+  <label for="cjCulture">How can we transform achievements into a lasting culture of civic sense?</label>
+  <textarea id="cjCulture" placeholder="Suggest realistic steps: role-modelling, shared ownership, respectful reminders, better systems, participation and follow-up…"></textarea>
+  <h4 style="color:var(--navy)">Part C · Enthusiast or activist? From appreciation to action</h4>
+  <p><strong>Enthusiasm ignites the spark; activism fuels the action; consistency creates the change.</strong> An enthusiast may appreciate a clean campus and encourage others; an activist may help establish routines, address recurring barriers and advocate workable solutions. Both are valuable, and the same person can be both.</p>
+  <div class="grid">
+    <div class="card"><strong>Enthusiast</strong><p>“Isn’t this a wonderful initiative?”</p><p class="small muted">Generates interest, positivity and participation.</p></div>
+    <div class="card"><strong>Activist</strong><p>“How can we make this work, and how will we know it makes a difference?”</p><p class="small muted">Turns concern into purposeful, sustained action.</p></div>
+  </div>
+  <p><strong>Discuss in pairs or groups:</strong></p>
+  <ul>
+    <li>Do I appreciate positive change, or actively contribute to it?</li>
+    <li>Do I join only when an activity is organised, or do I initiate action?</li>
+    <li>When I notice undesirable civic behaviour, do I ignore it, complain, or take constructive action?</li>
+    <li>Do my actions influence others to adopt responsible behaviour?</li>
+    <li>What have I done in the last 30 days to make my school or community better?</li>
+  </ul>
+  <h4 style="color:var(--navy)">Part D · Three aspirational roles</h4>
+  <div class="role-grid">
+    <div><strong>Role Model</strong><p><em>I practise what I promote.</em></p><p>Demonstrate desired behaviour through personal example.</p></div>
+    <div><strong>Culture Champion</strong><p><em>I help make good behaviour a shared habit.</em></p><p>Help responsible practices become part of everyday group culture.</p></div>
+    <div><strong>Transformational Leader</strong><p><em>I create conditions for lasting change.</em></p><p>Build systems, shared ownership and routines that sustain improvement.</p></div>
+  </div>
+  <h4 style="color:var(--navy)">Part E · My seven-day civic commitment</h4>
+  <label for="cjAction">What one action will I take in the next seven days in my KV or community?</label>
+  <textarea id="cjAction" placeholder="State one specific, safe and achievable action; where and when it will happen; who will be involved; and how you will notice progress."></textarea>
+  <label for="cjEvidence">What evidence will show progress—and how will I help sustain it?</label>
+  <textarea id="cjEvidence" placeholder="For example: a repeated routine, feedback from students/staff, a resolved concern, reduced waste, responsible resource use or a 30-day follow-up. Avoid counting photographs or slogans as proof by themselves."></textarea>
+  <div class="notice"><strong>Safeguards:</strong> No shaming, public ranking or blaming. Respect sanitation workers and support staff. Children may observe, suggest and practise safe habits; adults remain responsible for hazards, technical work and institutional decisions. Integrate actions into existing routines wherever possible.</div>
+  <div class="notice" style="background:#fff9e9;border-color:#f0d58b"><strong>Takeaway:</strong><br>Don't just observe. Participate.<br>Don't just appreciate. Initiate.<br>Don't just complain. Contribute.<br>Don't just preach. Practise.<br>Don't wait for others. Lead by example.<br><br><strong>Be the Change. Lead the Change. Live the Change!</strong></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+    <button type="button" class="primary" id="cjSubmit">Submit reflection to workshop register</button>
+    <button type="button" class="secondary" id="cjPrint">Print / Save as PDF</button>
+    <button type="button" class="secondary" id="cjClear">Clear responses</button>
+  </div>
+  <p id="cjStatus" class="small muted" role="status" aria-live="polite">Complete your reflection and seven-day commitment. You may print or save a PDF copy.</p>
+</div>
+
 </section>
 
 <section id="gradewise" class="panel">
@@ -1653,6 +1734,40 @@ document.addEventListener('DOMContentLoaded',()=>{
  nameInput.addEventListener('input',()=>{const p=matchName();if(p)roleInput.value='Principal, '+p.school;});
  roleInput.addEventListener('input',()=>{const v=roleInput.value.trim().toLocaleLowerCase();const p=roster.find(p=>('principal, '+p.school).toLocaleLowerCase()===v||p.school.toLocaleLowerCase()===v);if(p)nameInput.value=p.name;});
 });
+
+/* Civic journey reflection activity */
+function civicJourneyData(){
+ const ids=['cjParticipant','cjRole','cjCurrent','cjNext','cjStrengths','cjGaps','cjCulture','cjAction','cjEvidence'];
+ const d={};ids.forEach(id=>{const el=document.getElementById(id);d[id]=el?el.value.trim():'';});
+ d.submittedAt=new Date().toISOString();return d;
+}
+function civicJourneyPrint(){
+ const d=civicJourneyData();
+ const esc=x=>String(x||'—').replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+ const stages=[['Observer','Notices what is happening but remains uninvolved.'],['Aware Citizen','Understands the issue and its consequences.'],['Supporter','Believes in the cause and supports it.'],['Enthusiast','Shows passion, interest and willingness to participate.'],['Participant','Actively takes part when opportunities arise.'],['Volunteer','Freely contributes time and effort to the cause.'],['Initiator','Takes the first step and starts an activity.'],['Advocate','Persuades others and promotes the cause.'],['Activist','Consistently works to challenge problems and bring change.'],['Change Agent','Converts ideas into sustained improvements in behaviour and practice.'],['Role Model','I practise what I promote.'],['Culture Champion','I help make good behaviour a shared habit.'],['Transformational Leader','I create conditions for lasting change.']];
+ const rows=stages.map((s,i)=>'<li><strong>'+(i+1)+'. '+esc(s[0])+'</strong> — '+esc(s[1])+'</li>').join('');
+ const labels=[['Current stage','cjCurrent'],['Aspirational stage','cjNext'],['Efforts and contributions to appreciate','cjStrengths'],['Gaps and barriers','cjGaps'],['How to build a lasting civic culture','cjCulture'],['My seven-day action','cjAction'],['Evidence and follow-up','cjEvidence']];
+ const sections=labels.map(x=>'<h3>'+esc(x[0])+'</h3><p>'+esc(d[x[1]])+'</p>').join('');
+ const w=window.open('','_blank');if(!w){document.getElementById('cjStatus').textContent='Please allow the print window and try again.';return;}
+ w.document.write('<!doctype html><html><head><title>Civic Journey Reflection</title><style>body{font:14px Arial;line-height:1.5;max-width:900px;margin:30px auto;color:#17243a}h1,h2,h3{color:#12356a}li{margin:5px 0}.box{border:1px solid #dce4ee;border-radius:8px;padding:12px;margin:10px 0}p{white-space:pre-wrap}@media print{body{margin:12mm}}</style></head><body><h1>Journey from Observer to Transformational Leader</h1><p><strong>KVS Civic Behaviour Initiative · Participant Reflection</strong></p><p>Name: '+esc(d.cjParticipant)+' | Role/KV: '+esc(d.cjRole)+'</p><h2>Be the change that you wish to see in the world.</h2><p>— Mahatma Gandhi (commonly attributed)</p><div class="box"><h2>Civic Engagement Continuum</h2><ol>'+rows+'</ol></div><div class="box">'+sections+'</div><p><strong>Don't just observe. Participate. Don't just appreciate. Initiate. Don't just complain. Contribute. Don't just preach. Practise. Don't wait for others. Lead by example.</strong></p><h2>Be the Change. Lead the Change. Live the Change!</h2><script>window.onload=()=>window.print()<\\/script></body></html>');
+ w.document.close();document.getElementById('cjStatus').textContent='Print dialog opened. Choose “Save as PDF” to save a copy.';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ const printBtn=document.getElementById('cjPrint'),clearBtn=document.getElementById('cjClear'),submitBtn=document.getElementById('cjSubmit');
+ if(printBtn)printBtn.addEventListener('click',civicJourneyPrint);
+ if(clearBtn)clearBtn.addEventListener('click',()=>{if(!confirm('Clear all Civic Journey responses?'))return;document.querySelectorAll('#civicJourneyActivity input,#civicJourneyActivity select,#civicJourneyActivity textarea').forEach(el=>el.value='');document.getElementById('cjStatus').textContent='Responses cleared.';});
+ if(submitBtn)submitBtn.addEventListener('click',async()=>{
+  const d=civicJourneyData(),status=document.getElementById('cjStatus');
+  if(!d.cjCurrent||!d.cjNext||!d.cjAction){status.textContent='Please select your current stage, an aspirational stage, and enter your seven-day action before submitting.';return;}
+  submitBtn.disabled=true;status.textContent='Submitting your reflection…';
+  try{
+   await apiPost({action:'submitActivity',activityId:'CIVIC_JOURNEY_OBSERVER_TO_TRANSFORMATIONAL_LEADER',activityTitle:'Journey from Observer to Transformational Leader',submittedBy:d.cjParticipant||'Participant not named',workshopRole:d.cjRole||'Workshop participant',groupName:'Civic Journey Reflection',responseData:d});
+   status.textContent='Response sent to the workshop register. Please check the register if confirmation is required.';
+  }catch(err){status.textContent='Submission could not be sent: '+(err&&err.message?err.message:String(err))+'. Please use Print / Save as PDF to keep a copy.';}
+  finally{submitBtn.disabled=false;}
+ });
+});
+
 </script>
 </body>
 </html>
