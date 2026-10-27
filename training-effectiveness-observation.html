@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Training Effectiveness Observation Form | KVS Civic Behaviour Initiative</title>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<style>
+:root{--navy:#12356a;--blue:#1e5aa8;--green:#16845b;--gold:#f5b82e;--ink:#17243a;--muted:#607087;--paper:#f4f7fb;--line:#dce4ee;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 Arial,Helvetica,sans-serif}
+header{background:linear-gradient(120deg,#12356a,#1e5aa8);color:#fff;padding:26px 18px}header .wrap,main{max-width:1120px;margin:auto}.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:#f5b82e}h1{margin:6px 0;font-size:clamp(1.6rem,4vw,2.5rem);line-height:1.15}header p{margin:8px 0 0;max-width:800px;color:#e9f1ff}
+main{padding:20px 14px 50px}.topnav{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 16px}.btn,button{border:0;border-radius:9px;padding:11px 15px;font-weight:700;cursor:pointer;font-size:.95rem;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}.primary{background:var(--green);color:#fff}.secondary{background:#e8eef7;color:var(--navy);border:1px solid #cbd8e9}.gold{background:var(--gold);color:var(--navy)}.danger{background:#fff0f0;color:#9e2525;border:1px solid #f0c5c5}
+.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:18px;margin:14px 0;box-shadow:0 3px 12px #18345c0a}.card h2{margin:0 0 7px;color:var(--navy);font-size:1.25rem}.intro{color:var(--muted);margin-top:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field label{display:block;font-weight:700;font-size:.9rem;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:76px;resize:vertical}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.badge{display:inline-block;background:#eaf2ff;color:var(--blue);padding:4px 9px;border-radius:20px;font-size:.8rem;font-weight:700;white-space:nowrap}
+.rating-key{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.rating-key span{background:#f2f5fa;border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:.82rem}
+.item{padding:15px 0;border-top:1px solid #e7edf5}.item:first-of-type{border-top:0}.item-title{font-weight:700;margin-bottom:10px}.item-controls{display:grid;grid-template-columns:minmax(245px, .85fr) minmax(220px,1fr);gap:12px;align-items:start}.ratings{display:flex;gap:7px;flex-wrap:wrap}.rating{display:flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #d6deea;border-radius:8px;background:#fbfcfe;font-size:.9rem}.rating input{accent-color:var(--blue);width:16px;height:16px}.notes label{font-size:.82rem;font-weight:700;display:block;margin-bottom:4px}.notes textarea{min-height:58px;font-size:.9rem}.summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.stat{padding:12px 8px;border-radius:10px;background:#f2f6fc;text-align:center}.stat strong{display:block;font-size:1.5rem;color:var(--navy)}.stat span{font-size:.8rem;color:var(--muted)}.progress{height:8px;background:#e5ebf3;border-radius:99px;overflow:hidden;margin:12px 0}.progress div{height:100%;background:var(--green);width:0;transition:width .2s}.notice{padding:12px 14px;background:#fff8df;border:1px solid #f0df9c;border-radius:10px;color:#5d4a08;font-size:.9rem}.status{margin-top:12px;padding:12px;border-radius:9px;display:none}.status.show{display:block}.status.ok{background:#e8f7ef;color:#12653e}.status.warn{background:#fff5dd;color:#795b00}.status.error{background:#fff0f0;color:#922}.footer-actions{display:flex;gap:9px;flex-wrap:wrap;position:sticky;bottom:8px;padding:10px;background:#ffffffed;backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;box-shadow:0 5px 22px #102a4a15;z-index:5}.small{font-size:.85rem;color:var(--muted)}.required{color:#b42318}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.item-controls{grid-template-columns:1fr}.summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.footer-actions .btn, .footer-actions button{flex:1}.card{padding:14px}}
+@media print{.topnav,.footer-actions,header .eyebrow{display:none}body{background:#fff}.card{box-shadow:none;break-inside:avoid}.item{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">KVS · Training Quality & Cascade Fidelity</div><h1>Training Effectiveness Observation Form</h1><p>Interactive observation, evidence capture and follow-up planning for training sessions. Based on the supplied Training Observation Form.</p></div></header>
+<main>
+<div class="topnav"><a class="btn secondary" href="./index.html">← Back to Participant Hub</a><button class="btn secondary" type="button" onclick="window.print()">Print / Save as PDF</button></div>
+<div class="notice"><strong>How to use:</strong> Select one rating for each observable element and record specific evidence where possible. Choose N/O when an element was not observed or is not applicable. The form autosaves a draft in this browser; use “Submit observation” to send it to the configured workshop submission endpoint.</div>
+<section class="card">
+<h2>Observer and session details</h2><p class="intro">Complete the session information before rating the observation.</p>
+<div class="grid">
+<div class="field"><label for="observerName">Observer name <span class="required">*</span></label><input id="observerName" data-meta placeholder="Enter observer name" required></div>
+<div class="field"><label for="designation">Designation</label><input id="designation" data-meta placeholder="Designation"></div>
+<div class="field"><label for="observerRole">Role in this session <span class="required">*</span></label><select id="observerRole" data-meta required><option value="">Select role</option><option>ZIET Observer</option><option>Partner Observer</option></select></div>
+<div class="field"><label for="observationDate">Date <span class="required">*</span></label><input id="observationDate" type="date" data-meta required></div>
+<div class="field"><label for="venue">Venue of training (Name of KV & Region) <span class="required">*</span></label><input id="venue" data-meta placeholder="KV name and region" required></div>
+<div class="field"><label for="facilitators">Name of facilitator(s) <span class="required">*</span></label><input id="facilitators" data-meta placeholder="Enter facilitator name(s)" required></div>
+</div><p class="small">Partner Observer: select this option if you are attending the session to observe on behalf of a partner organisation.</p>
+</section>
+<section class="card"><h2>Rating scale</h2><div class="rating-key"><span><b>1</b> — Not demonstrated</span><span><b>2</b> — Partially demonstrated</span><span><b>3</b> — Adequately demonstrated</span><span><b>4</b> — Strongly demonstrated</span><span><b>N/O</b> — Not observed / not applicable</span></div><p class="small">1: absent or substantially ineffective · 2: present but inconsistent / needs significant improvement · 3: appropriately demonstrated · 4: consistently strong and supports participant learning.</p></section>
+<section class="card" id="liveSummary"><div class="section-head"><div><h2>Observation progress</h2><p class="intro">Summary updates automatically as you rate items.</p></div><span class="badge" id="progressText">0% rated</span></div><div class="progress"><div id="progressBar"></div></div><div class="summary-grid"><div class="stat"><strong id="count1">0</strong><span>Rating 1</span></div><div class="stat"><strong id="count2">0</strong><span>Rating 2</span></div><div class="stat"><strong id="count3">0</strong><span>Rating 3</span></div><div class="stat"><strong id="count4">0</strong><span>Rating 4</span></div><div class="stat"><strong id="countNO">0</strong><span>N/O</span></div></div><p id="averageText" class="small">Average rating: — (N/O excluded)</p></section>
+<div id="sections"></div>
+<section class="card"><h2>G. Other Notable Observations</h2><p class="intro">Share any other observations, feedback or insights not captured in the categories above.</p><div class="field"><label for="otherObservations">Additional observations</label><textarea id="otherObservations" data-meta placeholder="Write any additional feedback or insights..."></textarea></div></section>
+<section class="card"><h2>Observer's overall reflection</h2><div class="grid"><div class="field"><label for="strengths">Key strengths observed</label><textarea id="strengths" data-meta placeholder="What worked well?"></textarea></div><div class="field"><label for="improvements">Priority areas for improvement</label><textarea id="improvements" data-meta placeholder="What needs strengthening before the next level of training?"></textarea></div><div class="field"><label for="followUp">Recommended follow-up / support</label><textarea id="followUp" data-meta placeholder="Suggested support, coaching or resources"></textarea></div><div class="field"><label for="nextStep">Action before the next cascade level</label><textarea id="nextStep" data-meta placeholder="Specific next step, owner and timeline"></textarea></div></div></section>
+<div class="footer-actions"><button class="btn secondary" type="button" id="saveDraft">Save draft</button><button class="btn secondary" type="button" id="loadDraft">Restore draft</button><button class="btn gold" type="button" id="downloadPdf">Generate PDF</button><button class="btn primary" type="button" id="submitForm">Submit observation</button><button class="btn danger" type="button" id="clearForm">Clear form</button></div>
+<div id="status" class="status" role="status" aria-live="polite"></div>
+<p class="small">Privacy and submission: the draft is stored locally in this browser. Submission uses the existing workshop endpoint configured in the participant hub. Because browser cross-origin restrictions may prevent confirmation, please retain the generated PDF until receipt is confirmed.</p>
+</main>
+<script>
+const RESOURCE_API_URL='https://script.google.com/macros/s/AKfycbwR9Znwvc2DCeJFtlv47fUTJyUmFWza6J75b_h8pDR-u8Pd5uINfbyObPLofEzcqsWHtA/exec';
+const DRAFT_KEY='kvs_training_effectiveness_observation_v1';
+const sections=[
+{title:'A. Purpose, Context & Alignment',items:[
+'Facilitator clearly establishes why the initiative is needed',
+'Facilitator connects the initiative to everyday school life and practices',
+'Facilitator establishes that the initiative is about sustained behaviour change, not one-time cleanliness activities',
+'Facilitator clarifies the role of adults, students and the school as a whole',
+'Participants understand what they are expected to do after the training']},
+{title:'B. Content Quality & Fidelity',description:'Assesses whether the intended programme messages are retained through the cascade.',items:[
+'Facilitator uses the provided resources appropriately',
+'Activities are conducted as intended, while allowing appropriate contextual adaptation',
+'Facilitator explains the purpose behind an activity, not just the procedure',
+"Examples are relevant to participants' school contexts",
+'Facilitator avoids introducing messages/practices that conflict with the initiative',
+'Inclusion and safety are meaningfully integrated into examples and discussion',
+'Core messages of each session are covered and possible misconceptions are addressed',
+'Any content the facilitator adds (slides, stories, examples) supports the core messages']},
+{title:'C. Facilitation Quality',description:'Observe the following five dimensions rather than treating facilitation as one broad category.',subsections:[
+{title:'C1. Time & Flow Management',items:[
+'Facilitator allocates appropriate time to activities, discussion and reflection',
+'Facilitator can bring activities/discussions to closure',
+'Training progresses at a pace that keeps participants engaged without rushing important learning',
+'Any content the facilitator adds (slides, stories, examples) supports the core messages']},
+{title:'C2. Engagement of the Whole Group',items:[
+'Facilitator creates opportunities for all/most participants to participate',
+'Facilitator does not repeatedly rely on the same few participants for responses',
+'Facilitator uses strategies such as pair/share, small groups, written responses, polls, show of hands, etc. to broaden participation',
+'Facilitator notices and responds when some participants become disengaged',
+'Quieter participants are given opportunities to contribute without being put on the spot',
+"Facilitator draws out participants' existing practices and links them to the initiative",
+'Participation is purposeful and contributes to the learning rather than being engagement for its own sake',
+'Facilitator draws out participants’ existing practices/examples and links them to the initiative']},
+{title:'C3. Questioning & Discussion',items:[
+'Facilitator asks questions that require participants to think/apply, rather than only recall',
+'Facilitator gives participants adequate wait time to think before taking responses',
+'Facilitator probes or follows up on responses where appropriate',
+'Facilitator handles incorrect or partial responses constructively',
+'Discussion is brought back to the intended learning/message']},
+{title:'C4. Reflection & Debrief',items:[
+'Facilitator provides adequate time for reflection after an activity',
+'Reflection questions move beyond “Did you like the activity?”',
+'Facilitator asks participants to connect the activity to their own school context',
+'Facilitator probes participants’ thinking rather than immediately explaining the “correct” answer',
+'Facilitator explicitly connects participant responses back to the core message/purpose of the activity',
+'Facilitator can explain the concepts beyond what is written on the slides',
+'Facilitator explains the programme’s frameworks (e.g. the four connected routes, how they work together) accurately',
+'Facilitator checks whether the intended learning/message emerged from the reflection']}]},
+{title:'D. Evidence of Participant Learning',items:[
+'Facilitator checks participants’ prior understanding',
+'Participants can explain the purpose of the initiative in their own words',
+'Participants can explain the difference between one-time activities and sustained behaviour change',
+'Participants can apply the concepts to realistic school situations']},
+{title:'E. Implementation Readiness',items:[
+'Participants can identify how the initiative can be integrated into existing school routines',
+'Participants can identify what adults need to model differently',
+'Participants can identify opportunities for meaningful student participation',
+'Participants can identify inclusion/accessibility considerations',
+'Participants identify a realistic next step for implementation']}
+];
+let itemCount=0;
+function makeItem(text,sectionKey,index){
+ const id='item_'+index;const wrap=document.createElement('div');wrap.className='item';wrap.dataset.itemId=id;
+ const title=document.createElement('div');title.className='item-title';title.textContent=text;wrap.appendChild(title);
+ const controls=document.createElement('div');controls.className='item-controls';
+ const ratings=document.createElement('div');ratings.className='ratings';ratings.setAttribute('role','radiogroup');ratings.setAttribute('aria-label',text);
+ [['1','1'],['2','2'],['3','3'],['4','4'],['N/O','NO']].forEach(([label,value])=>{const lab=document.createElement('label');lab.className='rating';const input=document.createElement('input');input.type='radio';input.name=id;input.value=value;input.addEventListener('change',updateSummary);lab.append(input,document.createTextNode(label));ratings.appendChild(lab)});
+ const note=document.createElement('div');note.className='notes';const nl=document.createElement('label');nl.htmlFor=id+'_note';nl.textContent='Evidence / Notes';const ta=document.createElement('textarea');ta.id=id+'_note';ta.placeholder='Record what you observed (optional but encouraged)';ta.dataset.noteFor=id;ta.addEventListener('input',debouncedSave);note.append(nl,ta);
+ controls.append(ratings,note);wrap.appendChild(controls);return wrap;
+}
+function renderSections(){const root=document.getElementById('sections');sections.forEach((s,si)=>{const card=document.createElement('section');card.className='card';const h=document.createElement('h2');h.textContent=s.title;card.appendChild(h);if(s.description){const p=document.createElement('p');p.className='intro';p.textContent=s.description;card.appendChild(p)}
+ const groups=s.subsections||[{title:null,items:s.items}];groups.forEach(g=>{if(g.title){const sh=document.createElement('h3');sh.style.color='var(--blue)';sh.textContent=g.title;card.appendChild(sh)}g.items.forEach(t=>{itemCount++;card.appendChild(makeItem(t,s.title,itemCount))})});root.appendChild(card)});}
+function getData(){const meta={};document.querySelectorAll('[data-meta]').forEach(el=>meta[el.id]=el.value);const ratings={};document.querySelectorAll('.item').forEach(item=>{const id=item.dataset.itemId;const selected=item.querySelector('input[type=radio]:checked');ratings[id]={question:item.querySelector('.item-title').textContent,rating:selected?selected.value:'',evidence:item.querySelector('textarea').value}});return {formTitle:'Training Effectiveness Observation Form',meta,ratings,summary:calcSummary(),capturedAt:new Date().toISOString()}}
+function calcSummary(){const counts={'1':0,'2':0,'3':0,'4':0,'NO':0};let answered=0,sum=0,numeric=0;document.querySelectorAll('.item').forEach(item=>{const sel=item.querySelector('input:checked');if(sel){answered++;counts[sel.value]++;if(sel.value!=='NO'){sum+=Number(sel.value);numeric++}}});return {counts,answered,total:itemCount,average:numeric?(sum/numeric).toFixed(2):''}}
+function updateSummary(){const s=calcSummary();['1','2','3','4'].forEach(k=>document.getElementById('count'+k).textContent=s.counts[k]);document.getElementById('countNO').textContent=s.counts.NO;const pct=s.total?Math.round(s.answered/s.total*100):0;document.getElementById('progressText').textContent=pct+'% rated ('+s.answered+'/'+s.total+')';document.getElementById('progressBar').style.width=pct+'%';document.getElementById('averageText').textContent='Average rating: '+(s.average||'—')+' (N/O excluded)';debouncedSave()}
+function showStatus(msg,type='ok'){const el=document.getElementById('status');el.textContent=msg;el.className='status show '+type;el.scrollIntoView({behavior:'smooth',block:'nearest'})}
+let saveTimer;function debouncedSave(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify(getData()))}catch(e){}},500)}
+function restoreData(d){if(!d)return;Object.entries(d.meta||{}).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.value=val});Object.entries(d.ratings||{}).forEach(([id,val])=>{const item=document.querySelector('[data-item-id="'+id+'"]');if(!item)return;if(val.rating){const radio=item.querySelector('input[value="'+val.rating+'"]');if(radio)radio.checked=true}const ta=item.querySelector('textarea');if(ta)ta.value=val.evidence||''});updateSummary();if(d.meta&&d.meta.otherObservations)document.getElementById('otherObservations').value=d.meta.otherObservations}
+function saveDraft(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(getData()));showStatus('Draft saved in this browser. It will remain available on this device/browser unless site data is cleared.','ok')}catch(e){showStatus('Could not save the draft in this browser.','error')}}
+function loadDraft(){try{const d=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(!d){showStatus('No saved draft was found in this browser.','warn');return}restoreData(d);showStatus('Saved draft restored.','ok')}catch(e){showStatus('Could not restore the saved draft.','error')}}
+function pdfBlob(){const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});const data=getData();let y=16;const pageH=280;const maxW=178;function ensure(h=7){if(y+h>pageH){doc.addPage();y=16}}function line(text,opts={}){const lines=doc.splitTextToSize(String(text||'—'),maxW);ensure(lines.length*5+2);doc.setFont('helvetica',opts.bold?'bold':'normal');doc.setFontSize(opts.size||9);doc.text(lines,16,y);y+=lines.length*5+2}
+ doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('Training Effectiveness Observation Form',16,y);y+=9;doc.setFontSize(9);doc.setFont('helvetica','normal');line('Observer: '+(data.meta.observerName||'—')+' | Designation: '+(data.meta.designation||'—'));line('Role: '+(data.meta.observerRole||'—')+' | Date: '+(data.meta.observationDate||'—'));line('Venue: '+(data.meta.venue||'—'));line('Facilitator(s): '+(data.meta.facilitators||'—'));line('Summary: '+data.summary.answered+'/'+data.summary.total+' rated | Average (N/O excluded): '+(data.summary.average||'—'));y+=2;
+ sections.forEach(s=>{ensure(10);doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text(s.title,16,y);y+=7;const groups=s.subsections||[{title:null,items:s.items}];groups.forEach(g=>{if(g.title)line(g.title,{bold:true,size:10});g.items.forEach(question=>{const found=Object.values(data.ratings).find(v=>v.question===question);line(question,{bold:true});line('Rating: '+(found&&found.rating?(found.rating==='NO'?'N/O':found.rating):'Not rated')+' | Evidence: '+(found&&found.evidence||'—'))})})});
+ line('G. Other Notable Observations',{bold:true,size:11});line(data.meta.otherObservations||'—');line('Observer’s overall reflection',{bold:true,size:11});line('Key strengths: '+(data.meta.strengths||'—'));line('Priority improvements: '+(data.meta.improvements||'—'));line('Recommended follow-up: '+(data.meta.followUp||'—'));line('Action before next cascade level: '+(data.meta.nextStep||'—'));line('Generated: '+new Date().toLocaleString());return doc}
+function downloadPdf(){const doc=pdfBlob();const name='Training_Effectiveness_Observation_'+(document.getElementById('observationDate').value||new Date().toISOString().slice(0,10))+'.pdf';doc.save(name);showStatus('PDF generated. Keep a copy until submission has been confirmed.','ok')}
+function apiPost(data){return fetch(RESOURCE_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})}
+async function submitForm(){const required=['observerName','observerRole','observationDate','venue','facilitators'];for(const id of required){const el=document.getElementById(id);if(!el.value.trim()){el.focus();showStatus('Please complete the required field: '+el.previousElementSibling.textContent.replace('*','').trim()+'.','warn');return}}
+ const data=getData();if(!data.summary.answered){showStatus('Please rate at least one observation item before submitting.','warn');return}const btn=document.getElementById('submitForm');btn.disabled=true;btn.textContent='Submitting…';try{const pdf=pdfBlob();const pdfBase64=pdf.output('datauristring').split(',')[1];const payload={action:'submitActivity',activityId:'TRAINING_EFFECTIVENESS_OBSERVATION_FORM',activityTitle:'Training Effectiveness Observation Form',submittedBy:data.meta.observerName,workshopRole:data.meta.observerRole,groupName:data.meta.venue,responseData:data,pdfFileName:'Training_Effectiveness_Observation_'+(data.meta.observationDate||'undated')+'.pdf',pdfMimeType:'application/pdf',pdfBase64,pdfIncluded:true};await apiPost(payload);try{localStorage.setItem(DRAFT_KEY,JSON.stringify(data))}catch(e){}showStatus('Submission request sent. This browser cannot verify the server-side save because the endpoint uses no-cors mode. Please retain your PDF and check the workshop submission register or Drive folder to confirm receipt.','warn')}catch(e){showStatus('Submission could not be sent: '+e.message+'. Please download the PDF and try again later.','error')}finally{btn.disabled=false;btn.textContent='Submit observation'}}
+function clearForm(){if(!confirm('Clear all entered details and ratings from this form? Download or save a copy first if needed.'))return;document.querySelectorAll('[data-meta]').forEach(el=>el.value='');document.querySelectorAll('input[type=radio]').forEach(el=>el.checked=false);document.querySelectorAll('[data-note-for]').forEach(el=>el.value='');try{localStorage.removeItem(DRAFT_KEY)}catch(e){}updateSummary();showStatus('Form cleared.','ok')}
+renderSections();
+document.getElementById('observationDate').value=new Date().toISOString().slice(0,10);
+document.querySelectorAll('[data-meta]').forEach(el=>el.addEventListener('input',debouncedSave));
+document.getElementById('saveDraft').addEventListener('click',saveDraft);document.getElementById('loadDraft').addEventListener('click',loadDraft);document.getElementById('downloadPdf').addEventListener('click',downloadPdf);document.getElementById('submitForm').addEventListener('click',submitForm);document.getElementById('clearForm').addEventListener('click',clearForm);
+try{const d=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(d)restoreData(d);else updateSummary()}catch(e){updateSummary()}
+</script>
+</body></html>
