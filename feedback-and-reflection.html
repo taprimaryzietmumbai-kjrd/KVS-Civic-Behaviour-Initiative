@@ -27,13 +27,15 @@ label{display:block;font-weight:bold;margin:12px 0 5px}input,select,textarea{wid
 <div class="card"><h2>2. Session Reflection</h2><label for="session">Choose the session *</label><select id="session" required><option value="">Choose session</option><option value="1">Session 1 — Understanding the Purpose</option><option value="2">Session 2 — Exploring Curriculum Across Grades</option><option value="3">Session 3 — Responding to School Concerns</option><option value="4">Session 4 — Using the Observation Tool</option><option value="5">Session 5 — Your Classroom Becomes a School</option><option value="6">Session 6 — From Training to School</option></select><p class="muted">A session may contain several group activities and tasks. Record every one separately in Section 2B.</p></div><div class="card" id="taskSection"><h2>2B. Group Activities and Task-wise Reflection</h2><p>Enter every group activity or task assigned during this session. Add as many entries as needed; each task is recorded separately.</p><div id="taskList"></div><button class="btn" type="button" id="addTask">＋ Add Another Group Task</button><p class="muted">At least one task is required. Every task entry will be included in the PDF and saved with your local draft.</p></div>
 <div class="card"><h2>3. Your Role and Contribution</h2><label for="contributionRole">What was your role during the group activity? *</label><select id="contributionRole" required><option value="">Select your role in the activity</option><option>Facilitator / coordinator</option><option>Presenter / spokesperson</option><option>Recorder / note-taker</option><option>Researcher / information gatherer</option><option>Idea generator / problem-solver</option><option>Designer / visual organiser</option><option>Timekeeper / organiser</option><option>Active collaborator</option><option>Observer / critical friend</option><option>Other</option></select><label for="roleOther">If “Other”, specify (optional)</label><input id="roleOther" placeholder="Specify role"><label for="contribution">What was your contribution during the group activity? *</label><textarea id="contribution" required placeholder="Describe the ideas, actions, evidence, decisions or support you personally contributed."></textarea></div>
 <div class="card"><h2>4. Final Output and Learning</h2><label for="output">What was the final output? *</label><textarea id="output" required placeholder="Describe what your group produced, decided, presented or planned."></textarea><label for="skills">Specifically, what skills were sharpened or concepts learned / consolidated? *</label><textarea id="skills" required placeholder="For example: collaboration, critical thinking, systems thinking, communication, evidence-based reasoning, planning or civic responsibility—include only what reflects your experience."></textarea><label for="nextStep">How will you use this learning in your KV? (optional)</label><textarea id="nextStep" placeholder="Name one realistic next step, who may be involved and how you will know it helped."></textarea></div>
-<div class="card noprint"><button class="btn" type="button" id="download">Download Reflection (PDF)</button><button class="btn alt" type="button" id="save">Save Draft on This Device</button><button class="btn alt" type="button" id="clear">Clear Form</button><p class="muted">PDF download is local. This page does not transmit responses to a central spreadsheet or Drive unless a submission endpoint is configured.</p><div id="status" role="status" class="status" hidden></div></div>
+<div class="card noprint"><button class="btn" type="button" id="download">Download Reflection (PDF)</button><button class="btn" type="button" id="submitOnline">Submit Reflection to Google Sheets &amp; Drive</button><button class="btn alt" type="button" id="save">Save Draft on This Device</button><button class="btn alt" type="button" id="clear">Clear Form</button><p class="muted">Online submission records your response in the workshop response sheet and generates a PDF in Google Drive. Keep this page open until a submission confirmation appears.</p><div id="status" role="status" class="status" hidden></div></div>
 </form>
 <div class="card"><h2>Reflection prompts</h2><ul><li>What did I personally do, not only what did the group do?</li><li>What evidence shows that my contribution helped the group?</li><li>Which skill or concept became clearer through this activity?</li><li>What is one safe, feasible action I can carry forward in my school?</li></ul></div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script>
 const ids=['role','name','school','group','session','contributionRole','roleOther','contribution','output','skills','nextStep'];
+const CIVIC_FEEDBACK_WEB_APP_URL='https://script.google.com/macros/s/AKfycbwR9Znwvc2DCeJFtlv47fUTJyUmFWza6J75b_h8pDR-u8Pd5uINfbyObPLofEzcqsWHtA/exec';
+const CIVIC_FEEDBACK_ACTIVITY_ID='CIVIC_FEEDBACK_REFLECTION';
 const participants=[
 ['Sh. Jayesh Hirvaniya','PM SHRI K V CRPF, Gandhinagar','Resource Person'],
 ['Smt. Taruna Mathur','K V ONGC, Baroda','Resource Person'],
@@ -76,6 +78,46 @@ function show(msg){statusBox.hidden=false;statusBox.textContent=msg}
 function load(){try{const d=JSON.parse(localStorage.getItem(key)||'{}');ids.forEach(id=>{if(d[id]!==undefined)document.getElementById(id).value=d[id]});const p=participants.find(x=>x[0]===d.name);if(p)schoolInput.value=p[1];if(Array.isArray(d.tasks)&&d.tasks.length)d.tasks.forEach(t=>addTask(t));else if(d.activity)addTask({description:d.activity})}catch(e){}if(!document.querySelector('.task-entry'))addTask()}
 function save(){localStorage.setItem(key,JSON.stringify(data()));show('Draft saved on this device.')}
 form.addEventListener('input',()=>{localStorage.setItem(key,JSON.stringify(data()))});load();document.getElementById('addTask').addEventListener('click',()=>{addTask();saveSilently()});
+document.getElementById('submitOnline').addEventListener('click',async()=>{
+ if(!form.reportValidity())return;
+ const d=data();
+ if(!d.tasks.length||d.tasks.some(t=>!t.title.trim()||!t.description.trim()||!t.output.trim())){show('Complete the title, task description and output for every group task.');return}
+ if(!navigator.onLine){show('You appear to be offline. Reconnect before submitting. Your local draft remains saved.');return}
+ const button=document.getElementById('submitOnline');
+ button.disabled=true;button.textContent='Submitting…';
+ const clientRequestId=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('civic-'+Date.now()+'-'+Math.random().toString(36).slice(2));
+ const payload={action:'submitActivity',activityId:CIVIC_FEEDBACK_ACTIVITY_ID,activityTitle:'Feedback and Reflection — KVS Civic Behaviour & Cleanliness Workshop',groupName:d.group,submittedBy:d.name,workshopRole:d.role,responseData:{...d,clientRequestId:clientRequestId,submittedSchool:d.school,submissionPage:'Feedback and Reflection'}};
+ try{
+   // text/plain avoids a cross-origin preflight; status is confirmed separately via JSONP.
+   await fetch(CIVIC_FEEDBACK_WEB_APP_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload)});
+   show('Submission sent. Waiting for Google Sheets and PDF confirmation…');
+   const deadline=Date.now()+45000;
+   let confirmed=null;
+   while(Date.now()<deadline){
+     confirmed=await new Promise(resolve=>{
+       const cb='civicApiCb'+Date.now()+Math.random().toString(36).slice(2,7);
+       const script=document.createElement('script');let settled=false;
+       const timer=setTimeout(()=>finish(null),7000);
+       function finish(result){if(settled)return;settled=true;clearTimeout(timer);try{delete window[cb]}catch(e){window[cb]=undefined}script.remove();resolve(result)}
+       window[cb]=finish;
+       script.onerror=()=>finish(null);
+       script.src=CIVIC_FEEDBACK_WEB_APP_URL+'?action=submissionStatus&requestId='+encodeURIComponent(clientRequestId)+'&callback='+encodeURIComponent(cb)+'&_='+Date.now();
+       document.body.appendChild(script);
+     });
+     if(confirmed&&confirmed.found&&confirmed.pdfUrl)break;
+     if(confirmed&&confirmed.found&&!confirmed.pdfUrl){await new Promise(r=>setTimeout(r,1800));continue}
+     await new Promise(r=>setTimeout(r,1800));
+   }
+   if(confirmed&&confirmed.found&&confirmed.pdfUrl){
+     show('Submission confirmed. Your reflection is saved in Google Sheets and its PDF is in Google Drive.\nSubmission ID: '+(confirmed.submissionId||'recorded')+'\nPDF: '+confirmed.pdfUrl);
+     saveSilently();
+   }else if(confirmed&&confirmed.found){
+     show('Your response appears in Google Sheets, but the PDF link was not confirmed within the waiting period. Please contact the workshop coordinator before submitting again to avoid duplicates.');
+   }else{
+     show('The request was sent, but confirmation could not be verified. Your local draft is still available. Check the Activity Responses sheet before trying again to avoid duplicate submissions.');
+   }
+ }catch(err){show('Could not verify the online submission. Your local draft is preserved. Details: '+(err&&err.message?err.message:String(err)))}finally{button.disabled=false;button.textContent='Submit Reflection to Google Sheets & Drive'}
+});
 document.getElementById('save').addEventListener('click',save);
 document.getElementById('clear').addEventListener('click',()=>{if(confirm('Clear all reflection fields and the saved draft on this device?')){form.reset();document.getElementById('taskList').innerHTML='';addTask();localStorage.removeItem(key);show('Form and local draft cleared.')}});
 document.getElementById('download').addEventListener('click',()=>{if(!form.reportValidity())return;const d=data();if(!d.tasks.length||d.tasks.some(t=>!t.title.trim()||!t.description.trim()||!t.output.trim())){show('Complete the title, task description and output for every group task.');return}if(!window.jspdf){window.print();return}const {jsPDF}=window.jspdf;const pdf=new jsPDF({unit:'mm',format:'a4'});let y=17;const margin=16,w=178;function line(text,size=10,bold=false){pdf.setFont('helvetica',bold?'bold':'normal');pdf.setFontSize(size);const lines=pdf.splitTextToSize(String(text||'—'),w);if(y+lines.length*5>280){pdf.addPage();y=17}pdf.text(lines,margin,y);y+=lines.length*5+2}pdf.setFontSize(16);pdf.setFont('helvetica','bold');pdf.text('Feedback and Reflection',margin,y);y+=10;line('KVS Civic Behaviour & Cleanliness Workshop',10,true);line('Participant Details',12,true);line('Role: '+d.role);line('Name: '+d.name);line('School / KV: '+d.school);line('Group: '+d.group);line('Session: '+d.session);line('Group Activities and Task-wise Reflection',12,true);d.tasks.forEach((t,i)=>{line('Group Task '+(i+1)+': '+t.title,11,true);line('Task description');line(t.description);line('Task output / decision / product');line(t.output);line('Learning or skills from this task');line(t.learning||'Not provided')});line('Role during the activity',12,true);line(d.contributionRole+(d.roleOther?' — '+d.roleOther:''));line('Personal Contribution',12,true);line(d.contribution);line('Final Output',12,true);line(d.output);line('Skills sharpened / Concepts learned or consolidated',12,true);line(d.skills);line('Application in my KV',12,true);line(d.nextStep||'Not provided');line('Generated on: '+new Date().toLocaleString(),8);pdf.save('KVS-Feedback-and-Reflection-'+(d.name||'Participant').replace(/[^a-z0-9_-]/gi,'_')+'.pdf');show('PDF downloaded. If required, share it through your workshop’s approved submission channel.')});
