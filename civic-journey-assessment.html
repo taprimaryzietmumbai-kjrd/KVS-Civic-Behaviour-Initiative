@@ -12,13 +12,49 @@
 <header><div class="wrap"><div class="tag">Kendriya Vidyalaya Sangathan · Civic Behaviour Initiative</div><h1>Where Do You Stand?</h1><p><strong>From awareness to action — and from action to shared culture.</strong><br>Identify your current contribution, reflect on strengths and barriers, and generate a practical next step for your school or community.</p><a class="toplink" href="./index.html">← Back to Participant Hub</a></div></header>
 <main class="wrapmain">
 <div class="notice"><strong>How to use:</strong> Choose the stage that best describes your current practice—not the stage you think you ought to choose. Your suggested next step updates automatically. This is a reflection tool, not a formal evaluation or ranking.</div>
-<section class="card"><h2>1. Participant details</h2><div class="grid"><div class="field"><label for="participant">Name</label><input id="participant" type="text" list="names" placeholder="Type or select your name"><datalist id="names"></datalist></div><div class="field"><label for="role">Role / KV / organisation</label><input id="role" type="text" placeholder="e.g., Principal, KV …"></div><div class="field"><label for="group">Workshop group (optional)</label><input id="group" type="text" placeholder="Group / table name"></div></div></section>
+<section class="card"><h2>1. Participant details</h2><div class="grid"><div class="field"><label for="participant">Name (from Feedback Form attendance list)</label><input id="participant" type="text" list="journeyParticipantNames" placeholder="Type or select your name" autocomplete="off"><datalist id="journeyParticipantNames"></datalist><p class="muted">Choose your name to populate your Vidyalaya automatically from the Feedback Form attendance list.</p></div><div class="field"><label for="role">Role / KV / organisation</label><input id="role" type="text" placeholder="e.g., Principal, KV …"></div><div class="field"><label for="group">Workshop group (optional)</label><input id="group" type="text" placeholder="Group / table name"></div></div></section>
 <section class="card"><h2>2. Select your current stage</h2><p class="muted">Select one stage that most closely matches your present level of participation.</p><div id="stageOptions" class="stagegrid"></div><div class="summary" style="margin-top:14px"><span class="pill">Automatic reflection</span><h3 id="resultTitle">Choose a stage to begin</h3><p id="resultText">Your suggested next step will appear here.</p><p><strong>Try this next:</strong> <span id="nextStep">Select a stage above.</span></p></div></section>
 <section class="card"><h2>3. Reflect on strengths and barriers</h2><p class="muted">Choose the response that best reflects what happens in practice.</p><div id="questions"></div><div class="grid"><div><label for="strengths">What is already working well? (positives)</label><textarea id="strengths" placeholder="Practices, people, routines, or outcomes worth preserving…"></textarea></div><div><label for="barriers">What gets in the way? (concerns / gaps)</label><textarea id="barriers" placeholder="Barriers, inconsistencies, resource gaps, or behaviours to address…"></textarea></div><div><label for="recommendation">One improvement that would make a real difference</label><textarea id="recommendation" placeholder="A practical, evidence-informed improvement…"></textarea></div><div><label for="commitment">My next action (specific and time-bound)</label><textarea id="commitment" placeholder="Within the next 7 days, I will…"></textarea></div></div></section>
 <section class="card"><h2>4. Review and submit</h2><p class="muted">Generate a PDF for your records, or submit your reflection to the workshop register. The PDF-and-submit option also downloads a local copy for your reference.</p><div class="btns"><button class="primary" id="pdfSubmit">Generate PDF &amp; Submit</button><button class="secondary" id="pdfOnly">Generate / Download PDF</button><button class="secondary" id="submitOnly">Submit Reflection</button><button class="secondary" id="reset">Clear Form</button></div><div id="status" class="notice status" role="status" aria-live="polite">Your responses remain in this browser until you submit. Please keep a local PDF copy for your records.</div></section>
 </main><footer>ZIET Mumbai · KVS Civic Behaviour Initiative · Reflection for learning and action</footer>
 <script>
 const API='https://script.google.com/macros/s/AKfycbwR9Znwvc2DCeJFtlv47fUTJyUmFWza6J75b_h8pDR-u8Pd5uINfbyObPLofEzcqsWHtA/exec';
+const participants=[
+['Sh. Jayesh Hirvaniya','PM SHRI K V CRPF, Gandhinagar','Resource Person'],
+['Smt. Taruna Mathur','K V ONGC, Baroda','Resource Person'],
+['Smt. Chaina Agrawal','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Sh. Mehta Nishank','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Sh. Kamlesh Kumar Solanki','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Ms. Smita Variar','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Ms. Veena Navin Prasad','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Sh. Karamveer Dalal','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Ms. Sunita Parihar','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Ms. Dishaben K Shah','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Sh. Vikram Parmar','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Sh. Pinal Pravin Patel','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Ms. Monika Choudhary','PM SHRI Kendriya Vidyalaya No. 01, Vadodara','Participant'],
+['Ms. Poonam','PM SHRI Kendriya Vidyalaya No. 01, Vadodara','Participant'],
+['Sh. Diwakar Pandey','PM SHRI K V No. 1, Baroda','Participant'],
+['Ms. Arpana Parmar','PM SHRI K V No. 1, Baroda','Participant'],
+['Sh. Kiran Patel','PM SHRI K V No. 1, Baroda','Participant'],
+['Ms. Prasanna Ruchi','K V ONGC, Surat','Participant'],
+['Sh. Gori Shankar','K V ONGC, Surat','Participant'],
+['Ms. Komal','K V ONGC, Surat','Participant'],
+['Ms. Daksha Gupta','K V ONGC, Surat','Participant'],
+['Sh. Parth Shukla','K V ONGC, Surat','Participant'],
+['Ms. Vandana Parmar','PM SHRI K V CRPF, Gandhinagar','Participant'],
+['Ms. Sumitra Yadav','PM SHRI K V CRPF, Gandhinagar','Participant'],
+['Ms. Kinjal Kapadia','PM SHRI K V CRPF, Gandhinagar','Participant'],
+['Sh. Vasant Vaghela','PM SHRI K V CRPF, Gandhinagar','Participant'],
+['Sh. Kelar Jayeshkumar Hiralal','PM SHRI K V CRPF, Gandhinagar','Participant']
+];
+const journeyNameInput=document.getElementById('participant');
+const journeyKvInput=document.getElementById('role');
+const journeyNamesList=document.getElementById('journeyParticipantNames');
+participants.forEach(p=>{const o=document.createElement('option');o.value=p[0];journeyNamesList.appendChild(o)});
+function populateJourneyParticipant(){const entered=journeyNameInput.value.trim().toLocaleLowerCase();const p=participants.find(x=>x[0].toLocaleLowerCase()===entered);if(p){journeyKvInput.value=p[1];journeyKvInput.dataset.autoPopulated='true'}else if(journeyKvInput.dataset.autoPopulated==='true'){journeyKvInput.value='';delete journeyKvInput.dataset.autoPopulated}}
+journeyNameInput.addEventListener('change',populateJourneyParticipant);
+journeyNameInput.addEventListener('input',populateJourneyParticipant);
 const stages=[
 {name:'Indifferent',desc:'Does not yet feel concerned about the issue',next:'Notice one everyday civic behaviour issue and consider who is affected by it.',text:'You may not currently feel connected to this issue. Begin with curiosity: observe what happens, who is affected, and why it may matter.'},
 {name:'Observer',desc:'Notices what is happening but remains uninvolved',next:'Move from noticing to one small, respectful conversation or act of care.',text:'You are noticing civic behaviour and its effects. Observation is a useful starting point when it leads to a deliberate response.'},
