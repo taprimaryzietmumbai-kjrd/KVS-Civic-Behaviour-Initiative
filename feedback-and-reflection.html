@@ -20,8 +20,8 @@ label{display:block;font-weight:bold;margin:12px 0 5px}input,select,textarea{wid
 <form id="reflectionForm">
 <div class="card"><h2>1. Participant Details</h2><div class="grid">
 <div><label for="role">Select your role *</label><select id="role" required><option value="">Choose role</option><option>Resource Person</option><option>Participant</option></select></div>
-<div><label for="name">Select / enter your name *</label><input id="name" required list="names" placeholder="Type your name"><datalist id="names"></datalist><p class="muted">Name list can be configured for your workshop; type your name if it is not listed.</p></div>
-<div><label for="school">School / KV *</label><input id="school" required placeholder="Enter your Kendriya Vidyalaya"></div>
+<div><label for="name">Select your name from the attendance list *</label><select id="name" required><option value="">Choose participant</option></select><p class="muted">Names are drawn from the supplied regional attendance sheet.</p></div>
+<div><label for="school">Vidyalaya (auto-populated)</label><input id="school" readonly placeholder="Select your name first"><p class="muted">The Vidyalaya field fills automatically when you select a participant.</p></div>
 <div><label for="group">Select your group *</label><select id="group" required><option value="">Choose group</option><option>Group 1</option><option>Group 2</option><option>Group 3</option><option>Group 4</option><option>Group 5</option><option>Group 6</option><option>Other / Not assigned</option></select></div>
 </div></div>
 <div class="card"><h2>2. Session Reflection</h2><label for="session">Choose the session (six sessions) *</label><select id="session" required><option value="">Choose session</option><option>Session 1</option><option>Session 2</option><option>Session 3</option><option>Session 4</option><option>Session 5</option><option>Session 6</option></select><label for="activity">Mention the group activity you did during the workshop *</label><textarea id="activity" required placeholder="Describe the activity, task or challenge your group worked on."></textarea></div>
@@ -34,10 +34,42 @@ label{display:block;font-weight:bold;margin:12px 0 5px}input,select,textarea{wid
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script>
 const ids=['role','name','school','group','session','activity','contributionRole','roleOther','contribution','output','skills','nextStep'];
+const participants=[
+['Sh. Jayesh Hirvaniya','PM SHRI K V CRPF, Gandhinagar','Resource Person'],
+['Smt. Taruna Mathur','K V ONGC, Baroda','Resource Person'],
+['Smt. Chaina Agrawal','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Sh. Mehta Nishank','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Sh. Kamlesh Kumar Solanki','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Ms. Smita Variar','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Ms. Veena Navin Prasad','PM SHRI K V No. III (AFS), Baroda','Participant'],
+['Sh. Karamveer Dalal','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Ms. Sunita Parihar','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Ms. Dishaben K Shah','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Sh. Vikram Parmar','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Sh. Pinal Pravin Patel','PM SHRI K V No. 1, Ahmedabad','Participant'],
+['Ms. Monika Choudhary','Vidyalaya not specified on the supplied attendance sheet','Participant'],
+['Ms. Poonam','Vidyalaya not specified on the supplied attendance sheet','Participant'],
+['Sh. Diwakar Pandey','PM SHRI K V No. 1, Baroda','Participant'],
+['Ms. Arpana Parmar','PM SHRI K V No. 1, Baroda','Participant'],
+['Sh. Kiran Patel','PM SHRI K V No. 1, Baroda','Participant'],
+['Ms. Prasanna Ruchi','K V ONGC, Surat','Participant'],
+['Sh. Gori Shankar','K V ONGC, Surat','Participant'],
+['Ms. Komal','K V ONGC, Surat','Participant'],
+['Ms. Daksha Gupta','K V ONGC, Surat','Participant'],
+['Sh. Parth Shukla','K V ONGC, Surat','Participant'],
+['Ms. Vandana Parmar','PM SHRI K V CRPF, Gandhinagar','Participant'],
+['Ms. Sumitra Yadav','PM SHRI K V CRPF, Gandhinagar','Participant'],
+['Ms. Kinjal Kapadia','PM SHRI K V CRPF, Gandhinagar','Participant'],
+['Sh. Vasant Vaghela','PM SHRI K V CRPF, Gandhinagar','Participant'],
+['Sh. Kelar Jayeshkumar Hiralal','PM SHRI K V CRPF, Gandhinagar','Participant']
+];
+const nameSelect=document.getElementById('name'),schoolInput=document.getElementById('school');
+participants.forEach(p=>{const o=document.createElement('option');o.value=p[0];o.textContent=p[0];nameSelect.appendChild(o)});
+nameSelect.addEventListener('change',()=>{const p=participants.find(x=>x[0]===nameSelect.value);schoolInput.value=p?p[1]:'';const role=document.getElementById('role');if(p&&p[2]==='Resource Person')role.value='Resource Person';else if(p&&role.value==='')role.value='Participant';localStorage.setItem('kvsCivicFeedbackReflectionDraft',JSON.stringify(data()))});
 const form=document.getElementById('reflectionForm'),statusBox=document.getElementById('status'),key='kvsCivicFeedbackReflectionDraft';
 function data(){const d={};ids.forEach(id=>d[id]=document.getElementById(id).value);return d}
 function show(msg){statusBox.hidden=false;statusBox.textContent=msg}
-function load(){try{const d=JSON.parse(localStorage.getItem(key)||'{}');ids.forEach(id=>{if(d[id]!==undefined)document.getElementById(id).value=d[id]})}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem(key)||'{}');ids.forEach(id=>{if(d[id]!==undefined)document.getElementById(id).value=d[id]});const p=participants.find(x=>x[0]===d.name);if(p)schoolInput.value=p[1]}catch(e){}}
 function save(){localStorage.setItem(key,JSON.stringify(data()));show('Draft saved on this device.')}
 form.addEventListener('input',()=>{localStorage.setItem(key,JSON.stringify(data()))});load();
 document.getElementById('save').addEventListener('click',save);
